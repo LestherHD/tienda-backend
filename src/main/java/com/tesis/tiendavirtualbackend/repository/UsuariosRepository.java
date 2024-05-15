@@ -19,6 +19,10 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 
     Usuarios getByUsuario(String usuario);
 
+    Usuarios getByTelefono(String telefono);
+
+    Usuarios getByCorreo(String correo);
+
 //    JPQL
 //    @Query("Select new com.tesis.tiendavirtualbackend.bo.Usuarios(u.id, u.usuario) " +
 //            " from Usuarios u" +

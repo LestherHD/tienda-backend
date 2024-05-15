@@ -51,9 +51,21 @@ public class UsuariosServiceImpl implements UsuariosService {
     public String getUniqueValidator(UsuariosRequestDTO requestDTO) {
 
         if (null != requestDTO && null != requestDTO.getUsuarios()) {
-            Usuarios tp = repository.getByUsuario(requestDTO.getUsuarios().getUsuario());
-            if (null != tp && (tp.getId() != requestDTO.getUsuarios().getId())){
+            Usuarios obj1 = repository.getByUsuario(requestDTO.getUsuarios().getUsuario());
+            if (null != obj1){
                 return "El usuario ingresado ya se encuentra registrado en el sistema";
+            }
+
+            Usuarios obj2 = repository.getByTelefono(requestDTO.getUsuarios().getTelefono());
+            System.out.println("telefono: "+requestDTO.getUsuarios().getTelefono());
+            System.out.println("obj: "+obj2);
+            if (null != obj2){
+                return "El teléfono ingresado ya se encuentra registrado en el sistema";
+            }
+
+            Usuarios obj3 = repository.getByCorreo(requestDTO.getUsuarios().getCorreo());
+            if (null != obj3){
+                return "El correo ingresado ya se encuentra registrado en el sistema";
             }
         }
         return null;
