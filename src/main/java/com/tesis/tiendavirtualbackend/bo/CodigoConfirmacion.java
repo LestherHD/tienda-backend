@@ -20,8 +20,6 @@ public class CodigoConfirmacion {
     @Column(length = 15)
     private String codigo;
     @Column(length = 1)
-    private String activo;
-    @Column(length = 1)
     private String tipo;
     @Column()
     private Long usuarioId;

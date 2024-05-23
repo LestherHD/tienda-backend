@@ -9,8 +9,6 @@ public interface CodigoConfirmacionRepository extends JpaRepository<CodigoConfir
 
     CodigoConfirmacion getById(Long id);
 
-    CodigoConfirmacion getByUsuarioIdAndActivoAndTipo(Long usuarioId, String activo, String tipo);
-
     CodigoConfirmacion getByUsuarioIdAndTipo(Long usuarioId, String tipo);
 
     List<CodigoConfirmacion> getByUsuarioId(Long usuarioId);
