@@ -129,11 +129,12 @@ public class UsuariosServiceImpl implements UsuariosService {
 
         if (null !=  codigoConfirmacion) {
             codigoConfirmacionRepository.delete(codigoConfirmacion);
-            codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "Y", "R", usuario.getId(), new Date());
-            codigoConfirmacionRepository.save(codigoConfirmacion);
-            MailUtils.sendEmail("R", codigoConfirmacion.getCodigo(), usuario.getUsuario(), "", usuario.getNombres()+", "+usuario.getApellidos(),
-                    "", "", codigoConfirmacion.getFecha());
         }
+        codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "Y", "R", usuario.getId(), new Date());
+        codigoConfirmacionRepository.save(codigoConfirmacion);
+        MailUtils.sendEmail("R", codigoConfirmacion.getCodigo(), usuario.getUsuario(), "", usuario.getNombres()+", "+usuario.getApellidos(),
+                "", "", codigoConfirmacion.getFecha());
+
 
         return responseDTO;
     }
