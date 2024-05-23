@@ -2,6 +2,7 @@ package com.tesis.tiendavirtualbackend.controller;
 
 import com.tesis.tiendavirtualbackend.bo.Usuarios;
 import com.tesis.tiendavirtualbackend.dto.UsuariosRequestDTO;
+import com.tesis.tiendavirtualbackend.dto.UsuariosResponseDTO;
 import com.tesis.tiendavirtualbackend.service.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,5 +89,12 @@ public class UsuariosController {
     public String getValidadorUniques(@RequestBody UsuariosRequestDTO requestDTO){
         String response = service.getUniqueValidator(requestDTO);
         return response;
+    }
+
+    @PostMapping(path = "/recover-password")
+    @ResponseBody
+    public UsuariosResponseDTO recoverPassword(@RequestBody UsuariosRequestDTO request){
+        UsuariosResponseDTO obj = service.generarCodigoCambiarContrasenia(request);
+        return obj;
     }
 }

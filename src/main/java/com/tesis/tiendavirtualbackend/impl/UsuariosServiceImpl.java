@@ -1,13 +1,21 @@
 package com.tesis.tiendavirtualbackend.impl;
 
+import com.tesis.tiendavirtualbackend.bo.CodigoConfirmacion;
 import com.tesis.tiendavirtualbackend.bo.Usuarios;
 import com.tesis.tiendavirtualbackend.dto.UsuariosRequestDTO;
+import com.tesis.tiendavirtualbackend.dto.UsuariosResponseDTO;
+import com.tesis.tiendavirtualbackend.repository.CodigoConfirmacionRepository;
 import com.tesis.tiendavirtualbackend.repository.UsuariosRepository;
 import com.tesis.tiendavirtualbackend.service.UsuariosService;
+import com.tesis.tiendavirtualbackend.utils.MailUtils;
+import com.tesis.tiendavirtualbackend.utils.MetodosUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,6 +23,9 @@ public class UsuariosServiceImpl implements UsuariosService {
 
     @Autowired
     private UsuariosRepository repository;
+
+    @Autowired
+    private CodigoConfirmacionRepository codigoConfirmacionRepository;
 
     @Override
     public Usuarios getById(Long id) {
@@ -84,6 +95,10 @@ public class UsuariosServiceImpl implements UsuariosService {
         return repository.getByUsuario(usuario);
     }
 
+    public Usuarios getByUsuarioOrCorreo(String usuario, String correo) {
+        return repository.getByUsuarioOrCorreo(usuario, correo);
+    }
+
     @Override
     public Usuarios getByUsuarioOrCorreoAndContrasenia(String usuarioOCorreo, String contrasenia) {
         return repository.getByUsuarioAndContraseniaOrCorreoAndContrasenia(usuarioOCorreo, contrasenia, usuarioOCorreo, contrasenia);
@@ -92,5 +107,34 @@ public class UsuariosServiceImpl implements UsuariosService {
     @Override
     public Usuarios getByPrincipal() {
         return repository.getByPrincipal("Y");
+    }
+
+    @Override
+    public UsuariosResponseDTO generarCodigoCambiarContrasenia(UsuariosRequestDTO requestDTO) {
+
+        UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
+
+        Usuarios usuario = null;
+
+        usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuarios().getUsuario(), requestDTO.getUsuarios().getCorreo());
+        Pageable pageable = PageRequest.of(0, 1);
+        CodigoConfirmacion codigoConfirmacion = codigoConfirmacionRepository.getByUsuarioIdAndTipo(usuario.getId(),"R");
+        responseDTO.setError(false);
+        responseDTO.setUsuario(usuario);
+
+        if (null == usuario) {
+            responseDTO.setRespuesta("Usuario no existe");
+            responseDTO.setError(true);
+        }
+
+        if (null !=  codigoConfirmacion) {
+            codigoConfirmacionRepository.delete(codigoConfirmacion);
+            codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "Y", "R", usuario.getId(), new Date());
+            codigoConfirmacionRepository.save(codigoConfirmacion);
+            MailUtils.sendEmail("R", codigoConfirmacion.getCodigo(), usuario.getUsuario(), "", usuario.getNombres()+", "+usuario.getApellidos(),
+                    "", "", codigoConfirmacion.getFecha());
+        }
+
+        return responseDTO;
     }
 }

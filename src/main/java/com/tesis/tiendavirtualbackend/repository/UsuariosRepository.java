@@ -19,6 +19,8 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
 
     Usuarios getByUsuario(String usuario);
 
+    Usuarios getByUsuarioOrCorreo(String usuario, String correo);
+
     Usuarios getByTelefono(String telefono);
 
     Usuarios getByCorreo(String correo);
@@ -34,4 +36,5 @@ public interface UsuariosRepository extends JpaRepository<Usuarios, Long> {
     Usuarios getByUsuarioAndContraseniaOrCorreoAndContrasenia(String usuario, String contrasenia1, String correo, String contrasenia2);
 
     Usuarios getByPrincipal(String principal);
+
 }
