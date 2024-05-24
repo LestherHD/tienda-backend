@@ -77,10 +77,6 @@ public class UsuariosServiceImpl implements UsuariosService {
             if (null != obj3){
                 return "El usuario ingresado ya se encuentra registrado en el sistema";
             }
-
-
-
-
         }
         return null;
     }
@@ -95,8 +91,21 @@ public class UsuariosServiceImpl implements UsuariosService {
         return repository.getByUsuario(usuario);
     }
 
-    public Usuarios getByUsuarioOrCorreo(String usuario, String correo) {
-        return repository.getByUsuarioOrCorreo(usuario, correo);
+    @Override
+    public UsuariosResponseDTO getByUsuarioOrCorreo(String usuario, String correo) {
+        UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
+
+        Usuarios usuarioObj = repository.getByUsuarioOrCorreo(usuario, correo);
+
+        if (null == usuarioObj) {
+            responseDTO.setRespuesta("Usuario no existe");
+            responseDTO.setError(true);
+        } else {
+            responseDTO.setError(false);
+            responseDTO.setUsuario(usuarioObj);
+        }
+
+        return responseDTO;
     }
 
     @Override
@@ -116,7 +125,7 @@ public class UsuariosServiceImpl implements UsuariosService {
 
         Usuarios usuario = null;
 
-        usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuarios().getUsuario(), requestDTO.getUsuarios().getCorreo());
+        usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuario(), requestDTO.getCorreo());
         Pageable pageable = PageRequest.of(0, 1);
         CodigoConfirmacion codigoConfirmacion = codigoConfirmacionRepository.getByUsuarioIdAndTipo(usuario.getId(),"R");
         responseDTO.setError(false);
@@ -137,5 +146,42 @@ public class UsuariosServiceImpl implements UsuariosService {
 
 
         return responseDTO;
+    }
+
+    @Override
+    public UsuariosResponseDTO actualizarContrasenia(UsuariosRequestDTO requestDTO) {
+
+        UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
+
+        Usuarios usuario = null;
+
+        usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuario(), requestDTO.getCorreo());
+
+        CodigoConfirmacion codigoConfirmacion = codigoConfirmacionRepository.getByCodigoAndUsuarioIdAndTipo(requestDTO.getCodigo(),
+                usuario.getId(), "R");
+
+        if (null == codigoConfirmacion) {
+            responseDTO.setError(true);
+            String fecha = MetodosUtils.getFechaStringByFormat(codigoConfirmacion.getFecha(), "dd/MM/yyyy HH:mm:ss");
+            responseDTO.setRespuesta("Código de confirmación inválido, favor ingresar el código enviado con fecha y hora " + fecha);
+            return responseDTO;
+        } else if (null != codigoConfirmacion) {
+            codigoConfirmacionRepository.delete(codigoConfirmacion);
+            responseDTO.setRespuesta("Código confirmado");
+            responseDTO.setError(true);
+            responseDTO.setConfirmado(true);
+            return responseDTO;
+        }
+
+        if (null != usuario) {
+            usuario.setContrasenia(requestDTO.getContrasenia());
+            responseDTO.setRespuesta("Contraseña reestablecida");
+            responseDTO.setError(true);
+            responseDTO.setConfirmado(true);
+            repository.save(usuario);
+            return responseDTO;
+        }
+
+        return null;
     }
 }

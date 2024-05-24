@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "codigo_confirmacion")
+@Table(name = "codigos_confirmacion")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -21,6 +21,7 @@ public class MailUtils {
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.port","587");
         properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.ssl.trust", "*");
 
         session = Session.getInstance(properties,
                 new javax.mail.Authenticator() {
@@ -47,9 +48,7 @@ public class MailUtils {
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("lesthera2024@gmail.com", "Holandesa"));
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("renemarioluna@gmail.com"));
-//            message.addRecipient(Message.RecipientType.TO, new InternetAddress("betzabegudiel07@gmail.com"));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("sid.kfajardo@gmail.com"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("lesthermente@gmail.com"));
             message.setSubject("Código para confirmación - " + usuarioCodigo.toUpperCase() + " " +sdf.format(fecha));
             message.setHeader("Content-Type", "text/html");
 

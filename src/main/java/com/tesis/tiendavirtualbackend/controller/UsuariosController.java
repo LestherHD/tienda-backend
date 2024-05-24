@@ -39,6 +39,13 @@ public class UsuariosController {
         return obj;
     }
 
+    @PostMapping(path = "/getByUsuarioOrCorreo")
+    @ResponseBody
+    public UsuariosResponseDTO getByUsuarioOrCorreo(@RequestBody UsuariosRequestDTO request){
+        UsuariosResponseDTO obj = service.getByUsuarioOrCorreo(request.getUsuario(), request.getCorreo());
+        return obj;
+    }
+
     @GetMapping(path = "/login")
     @ResponseBody
     public Usuarios login(@RequestParam String usuarioOCorreo, @RequestParam String contrasenia){
@@ -95,6 +102,13 @@ public class UsuariosController {
     @ResponseBody
     public UsuariosResponseDTO recoverPassword(@RequestBody UsuariosRequestDTO request){
         UsuariosResponseDTO obj = service.generarCodigoCambiarContrasenia(request);
+        return obj;
+    }
+
+    @PostMapping(path = "/update-user-password")
+    @ResponseBody
+    public UsuariosResponseDTO actualizarContraseña(@RequestBody UsuariosRequestDTO request){
+        UsuariosResponseDTO obj = service.actualizarContrasenia(request);
         return obj;
     }
 }

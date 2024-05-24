@@ -23,9 +23,13 @@ public interface UsuariosService {
 
     Usuarios getByUsuario(String usuario);
 
+    UsuariosResponseDTO getByUsuarioOrCorreo(String usuario, String correo);
+
     Usuarios getByUsuarioOrCorreoAndContrasenia(String usuarioOCorreo, String contrasenia);
 
     Usuarios getByPrincipal();
 
     UsuariosResponseDTO generarCodigoCambiarContrasenia(UsuariosRequestDTO requestDTO);
+
+    UsuariosResponseDTO actualizarContrasenia(UsuariosRequestDTO requestDTO);
 }
