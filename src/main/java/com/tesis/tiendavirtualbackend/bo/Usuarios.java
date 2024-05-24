@@ -35,7 +35,5 @@ public class Usuarios {
     private Sucursales sucursal;
     @Column(length = 1)
     private String principal;
-    @Column(length = 1)
-    private String sesion;
 
 }
