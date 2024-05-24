@@ -157,12 +157,15 @@ public class UsuariosServiceImpl implements UsuariosService {
 
         usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuario(), requestDTO.getCorreo());
 
+        CodigoConfirmacion codigoConfirmacionInformativo = codigoConfirmacionRepository.getByUsuarioIdAndTipo(
+                usuario.getId(), "R");
+
         CodigoConfirmacion codigoConfirmacion = codigoConfirmacionRepository.getByCodigoAndUsuarioIdAndTipo(requestDTO.getCodigo(),
                 usuario.getId(), "R");
 
-        if (null == codigoConfirmacion) {
+        if (null == codigoConfirmacion && null != codigoConfirmacionInformativo) {
             responseDTO.setError(true);
-            String fecha = MetodosUtils.getFechaStringByFormat(codigoConfirmacion.getFecha(), "dd/MM/yyyy HH:mm:ss");
+            String fecha = MetodosUtils.getFechaStringByFormat(codigoConfirmacionInformativo.getFecha(), "dd/MM/yyyy HH:mm:ss");
             responseDTO.setRespuesta("Código de confirmación inválido, favor ingresar el código enviado con fecha y hora " + fecha);
             return responseDTO;
         } else if (null != codigoConfirmacion) {
