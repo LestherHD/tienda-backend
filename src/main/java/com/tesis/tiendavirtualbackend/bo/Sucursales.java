@@ -20,7 +20,7 @@ public class Sucursales {
     private String nombre;
     @Column(length = 160)
     private String descripcion;
-    @Column(length = 1)
+    @Column(length = 2)
     private String departamento;
 
 }

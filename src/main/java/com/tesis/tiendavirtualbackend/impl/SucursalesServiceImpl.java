@@ -53,10 +53,10 @@ public class SucursalesServiceImpl implements SucursalesService {
     public String getUniqueValidator(SucursalesRequestDTO requestDTO) {
 
         if (null != requestDTO && null != requestDTO.getSucursales()) {
-//            Sucursales tp = repository.getByTipo(requestDTO.getSucursales().getTipo());
-//            if (null != tp && (tp.getId() != requestDTO.getSucursales().getId() && tp.getTipo().equals("P"))){
-//                return "Ya existe una sucursal Principal registrada en el sistema";
-//            }
+            Sucursales tp = repository.getByNombre(requestDTO.getSucursales().getNombre());
+            if (null != tp && (tp.getId() != requestDTO.getSucursales().getId() && tp.getNombre().equals(requestDTO.getSucursales().getNombre()))){
+                return "Ya existe una sucursal con el mismo nombre registrada en el sistema";
+            }
         }
         return null;
     }

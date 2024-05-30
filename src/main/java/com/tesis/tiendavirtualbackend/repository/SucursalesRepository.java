@@ -20,4 +20,6 @@ public interface SucursalesRepository extends JpaRepository<Sucursales, Long> {
                                String departamentoSource, String departamento,
                                Pageable pageable);
 
+    Sucursales getByNombre(String nombre);
+
 }
