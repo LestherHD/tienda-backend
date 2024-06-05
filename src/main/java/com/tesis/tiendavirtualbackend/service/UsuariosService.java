@@ -31,5 +31,7 @@ public interface UsuariosService {
 
     UsuariosResponseDTO generarCodigoCambiarContrasenia(UsuariosRequestDTO requestDTO);
 
+    UsuariosResponseDTO generarCodigoConfirmarUsuarioPrincipal(UsuariosRequestDTO requestDTO);
+
     UsuariosResponseDTO actualizarContrasenia(UsuariosRequestDTO requestDTO);
 }

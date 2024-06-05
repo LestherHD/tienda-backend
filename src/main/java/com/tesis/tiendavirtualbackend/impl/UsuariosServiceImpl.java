@@ -149,6 +149,36 @@ public class UsuariosServiceImpl implements UsuariosService {
     }
 
     @Override
+    public UsuariosResponseDTO generarCodigoConfirmarUsuarioPrincipal(UsuariosRequestDTO requestDTO) {
+
+        UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
+
+        Usuarios usuario = null;
+
+        usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuario(), requestDTO.getCorreo());
+        Pageable pageable = PageRequest.of(0, 1);
+        CodigoConfirmacion codigoConfirmacion = codigoConfirmacionRepository.getByUsuarioIdAndTipo(usuario.getId(),"P");
+        responseDTO.setError(false);
+        responseDTO.setUsuario(usuario);
+
+        if (null == usuario) {
+            responseDTO.setRespuesta("Usuario no existe");
+            responseDTO.setError(true);
+        }
+
+        if (null !=  codigoConfirmacion) {
+            codigoConfirmacionRepository.delete(codigoConfirmacion);
+        }
+        codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "P", usuario.getId(), new Date());
+        codigoConfirmacionRepository.save(codigoConfirmacion);
+        MailUtils.sendEmail("P", codigoConfirmacion.getCodigo(), usuario.getUsuario(), "", usuario.getNombres()+", "+usuario.getApellidos(),
+                "", "", codigoConfirmacion.getFecha());
+
+
+        return responseDTO;
+    }
+
+    @Override
     public UsuariosResponseDTO actualizarContrasenia(UsuariosRequestDTO requestDTO) {
 
         UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
@@ -158,10 +188,10 @@ public class UsuariosServiceImpl implements UsuariosService {
         usuario = repository.getByUsuarioOrCorreo(requestDTO.getUsuario(), requestDTO.getCorreo());
 
         CodigoConfirmacion codigoConfirmacionInformativo = codigoConfirmacionRepository.getByUsuarioIdAndTipo(
-                usuario.getId(), "R");
+                usuario.getId(), requestDTO.getTipoRecuperacion());
 
         CodigoConfirmacion codigoConfirmacion = codigoConfirmacionRepository.getByCodigoAndUsuarioIdAndTipo(requestDTO.getCodigo(),
-                usuario.getId(), "R");
+                usuario.getId(), requestDTO.getTipoRecuperacion());
 
         if (null == codigoConfirmacion && null != codigoConfirmacionInformativo) {
             responseDTO.setError(true);

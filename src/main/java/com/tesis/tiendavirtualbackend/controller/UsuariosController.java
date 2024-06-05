@@ -105,6 +105,13 @@ public class UsuariosController {
         return obj;
     }
 
+    @PostMapping(path = "/principal-user")
+    @ResponseBody
+    public UsuariosResponseDTO principalUser(@RequestBody UsuariosRequestDTO request){
+        UsuariosResponseDTO obj = service.generarCodigoConfirmarUsuarioPrincipal(request);
+        return obj;
+    }
+
     @PostMapping(path = "/update-user-password")
     @ResponseBody
     public UsuariosResponseDTO actualizarContraseña(@RequestBody UsuariosRequestDTO request){
