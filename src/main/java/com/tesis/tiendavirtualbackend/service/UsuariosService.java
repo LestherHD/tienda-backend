@@ -25,6 +25,8 @@ public interface UsuariosService {
 
     UsuariosResponseDTO getByUsuarioOrCorreo(String usuario, String correo);
 
+    UsuariosResponseDTO getByInfoUsuarioOrCorreo(String usuario, String correo);
+
     Usuarios getByUsuarioOrCorreoAndContrasenia(String usuarioOCorreo, String contrasenia);
 
     Usuarios getByPrincipal();

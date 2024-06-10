@@ -109,6 +109,11 @@ public class UsuariosServiceImpl implements UsuariosService {
     }
 
     @Override
+    public UsuariosResponseDTO getByInfoUsuarioOrCorreo(String usuario, String correo) {
+        return repository.getInfoByUsuarioOrCorreo(usuario, correo);
+    }
+
+    @Override
     public Usuarios getByUsuarioOrCorreoAndContrasenia(String usuarioOCorreo, String contrasenia) {
         return repository.getByUsuarioAndContraseniaOrCorreoAndContrasenia(usuarioOCorreo, contrasenia, usuarioOCorreo, contrasenia);
     }

@@ -118,4 +118,13 @@ public class UsuariosController {
         UsuariosResponseDTO obj = service.actualizarContrasenia(request);
         return obj;
     }
+
+    @PostMapping(path = "/getByInfoUsuarioOrCorreo")
+    @ResponseBody
+    public UsuariosResponseDTO getByInfoUsuarioOrCorreo(@RequestBody UsuariosRequestDTO request){
+        UsuariosResponseDTO obj = service.getByInfoUsuarioOrCorreo(request.getUsuario(), request.getCorreo());
+        return obj;
+    }
+
+
 }
