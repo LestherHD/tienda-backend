@@ -11,5 +11,4 @@ public class SucursalesRequestDTO {
     private int page;
     private int size;
 
-
 }

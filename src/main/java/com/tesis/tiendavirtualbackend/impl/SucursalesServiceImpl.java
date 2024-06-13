@@ -2,9 +2,11 @@ package com.tesis.tiendavirtualbackend.impl;
 
 import com.tesis.tiendavirtualbackend.bo.Sucursales;
 import com.tesis.tiendavirtualbackend.dto.SucursalesRequestDTO;
+import com.tesis.tiendavirtualbackend.dto.SucursalesResponseDTO;
 import com.tesis.tiendavirtualbackend.repository.SucursalesRepository;
 import com.tesis.tiendavirtualbackend.service.SucursalesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +38,16 @@ public class SucursalesServiceImpl implements SucursalesService {
     }
 
     @Override
-    public Sucursales save(Sucursales obj) {
-        return repository.save(obj);
+    public SucursalesResponseDTO save(Sucursales obj) {
+        SucursalesResponseDTO responseDTO = new SucursalesResponseDTO();
+        try {
+            repository.save(obj);
+        } catch (DataIntegrityViolationException ex){
+            responseDTO.setError(true);
+            responseDTO.setMensaje(ex.getMessage());
+        }
+
+        return responseDTO;
     }
 
     @Override

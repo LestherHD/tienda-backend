@@ -2,6 +2,7 @@ package com.tesis.tiendavirtualbackend.controller;
 
 import com.tesis.tiendavirtualbackend.bo.Sucursales;
 import com.tesis.tiendavirtualbackend.dto.SucursalesRequestDTO;
+import com.tesis.tiendavirtualbackend.dto.SucursalesResponseDTO;
 import com.tesis.tiendavirtualbackend.service.SucursalesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,13 +47,13 @@ public class SucursalesController {
 
     @PostMapping
     @ResponseBody
-    public Sucursales save(@RequestBody Sucursales obj){
+    public SucursalesResponseDTO save(@RequestBody Sucursales obj){
         return service.save(obj);
     }
 
     @PutMapping
     @ResponseBody
-    public Sucursales update(@RequestBody Sucursales obj){
+    public SucursalesResponseDTO update(@RequestBody Sucursales obj){
         return service.save(obj);
     }
 
