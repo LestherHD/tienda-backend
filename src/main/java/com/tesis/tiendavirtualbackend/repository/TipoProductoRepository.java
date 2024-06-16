@@ -11,7 +11,7 @@ public interface TipoProductoRepository extends JpaRepository<TipoProducto, Long
 
     TipoProducto getById(Long id);
 
-    @Query("SELECT new com.tesis.tiendavirtualbackend.bo.TipoProducto(a.id, a.nombre, a.descripcion) " +
+    @Query("SELECT new com.tesis.tiendavirtualbackend.bo.TipoProducto(a.id, a.nombre) " +
             "FROM TipoProducto a " +
             "WHERE (?1 is null or CAST(a.id as string) LIKE %?2%) " +
             "and (?3 is null or a.nombre like %?4%) ")

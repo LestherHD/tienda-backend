@@ -5,13 +5,13 @@ import lombok.*;
 
 
 @Entity
-@Table(name = "tipo_producto")
+@Table(name = "caracteristicas")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TipoProducto {
+public class Caracteristicas {
 
     @Id
     @GeneratedValue( strategy= GenerationType.IDENTITY )
