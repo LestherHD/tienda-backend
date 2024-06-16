@@ -5,6 +5,7 @@ import com.tesis.tiendavirtualbackend.dto.SucursalesRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.SucursalesResponseDTO;
 import com.tesis.tiendavirtualbackend.repository.SucursalesRepository;
 import com.tesis.tiendavirtualbackend.service.SucursalesService;
+import com.tesis.tiendavirtualbackend.utils.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SucursalesServiceImpl implements SucursalesService {
@@ -38,24 +41,43 @@ public class SucursalesServiceImpl implements SucursalesService {
     }
 
     @Override
-    public SucursalesResponseDTO save(Sucursales obj) {
+    public SucursalesResponseDTO save(Sucursales obj, String type) {
         SucursalesResponseDTO responseDTO = new SucursalesResponseDTO();
         try {
             repository.save(obj);
+            responseDTO.setError(false);
+            responseDTO.setMensaje("Registro "+type+" con éxito");
         } catch (DataIntegrityViolationException ex){
+            HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+            mapExcepciones.put("sucursales.nombre_UNIQUE", "nombre");
+            String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
             responseDTO.setError(true);
-            responseDTO.setMensaje(ex.getMessage());
+            responseDTO.setMensaje(exception);
         }
 
         return responseDTO;
     }
 
     @Override
-    public void delete(Long id) {
+    public SucursalesResponseDTO delete(Long id) {
+        SucursalesResponseDTO responseDTO = new SucursalesResponseDTO();
+
         Sucursales obj = getById(id);
         if (obj != null) {
-            repository.delete(obj);
+            try {
+                repository.delete(obj);
+                responseDTO.setError(false);
+                responseDTO.setMensaje("Registro eliminado con éxito");
+            } catch (DataIntegrityViolationException ex){
+                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+                responseDTO.setError(true);
+                responseDTO.setMensaje(exception);
+            }
         }
+
+        return responseDTO;
     }
 
     //Método para validar campos únicos, devuelve un mensaje por medio del consumo del servicio

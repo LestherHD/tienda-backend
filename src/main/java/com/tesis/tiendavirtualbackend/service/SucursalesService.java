@@ -13,9 +13,9 @@ public interface SucursalesService {
 
     Page<Sucursales> getByPage(SucursalesRequestDTO request);
 
-    SucursalesResponseDTO save(Sucursales obj);
+    SucursalesResponseDTO save(Sucursales obj, String type);
 
-    void delete(Long id);
+    SucursalesResponseDTO delete(Long id);
 
     String getUniqueValidator(SucursalesRequestDTO requestDTO);
 

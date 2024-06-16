@@ -1,33 +1,45 @@
 package com.tesis.tiendavirtualbackend.utils;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashMap;
 
-@ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        if (isDuplicateKeyException(ex)) {
-            return "Error: Clave duplicada. El recurso ya existe.";
+    public static String handleDataIntegrityViolationException(DataIntegrityViolationException ex, HashMap<String, String> mapaExcepciones) {
+        if (isDuplicateKeyOrReferenceException(ex)) {
+            String errorMessage = ex.getMessage();
+            if (errorMessage.contains("Duplicate entry")) {
+
+                if (mapaExcepciones != null && !mapaExcepciones.isEmpty()){
+                    for (String key : mapaExcepciones.keySet()) {
+                        String value = mapaExcepciones.get(key);
+                        if (errorMessage.contains(key)){
+                            return "Error, el valor del campo "+ value + " ya se encuentra registrado.";
+                        }
+                    }
+                }
+            } else if (errorMessage.contains("Cannot delete or update a parent row: a foreign key constraint fails")){
+                if (mapaExcepciones != null && !mapaExcepciones.isEmpty()){
+                    for (String key : mapaExcepciones.keySet()) {
+                        String value = mapaExcepciones.get(key);
+                        if (errorMessage.contains(key)){
+                            return "Error, no se puede eliminar el registro seleccionado ya que se encuentra asociado a "+value+".";
+                        }
+                    }
+                }
+            }
         }
-        return "Error: Violación de integridad de datos.";
+        return "";
     }
 
-    private boolean isDuplicateKeyException(DataIntegrityViolationException ex) {
+    private static boolean isDuplicateKeyOrReferenceException(DataIntegrityViolationException ex) {
         Throwable cause = ex.getCause();
         while (cause != null) {
             if (cause instanceof SQLIntegrityConstraintViolationException) {
                 SQLIntegrityConstraintViolationException sqlEx = (SQLIntegrityConstraintViolationException) cause;
-                // Código de error de clave duplicada en MySQL es 1062
-                System.out.println("sqlEx.getErrorCode(): "+sqlEx.getErrorCode());
-                if (sqlEx.getErrorCode() == 1062) {
+                if (sqlEx.getErrorCode() == 1062 || sqlEx.getErrorCode() == 1451) {
                     return true;
                 }
             }

@@ -48,19 +48,19 @@ public class SucursalesController {
     @PostMapping
     @ResponseBody
     public SucursalesResponseDTO save(@RequestBody Sucursales obj){
-        return service.save(obj);
+        return service.save(obj, "agregado");
     }
 
     @PutMapping
     @ResponseBody
     public SucursalesResponseDTO update(@RequestBody Sucursales obj){
-        return service.save(obj);
+        return service.save(obj, "editado");
     }
 
     @DeleteMapping
     @ResponseBody
-    public void delete(@RequestParam Long id){
-        service.delete(id);
+    public SucursalesResponseDTO delete(@RequestParam Long id){
+        return service.delete(id);
     }
 
     @PostMapping(path = "/getValidadorUniques")
