@@ -1,6 +1,7 @@
 package com.tesis.tiendavirtualbackend.bo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,7 +32,8 @@ public class Productos {
     @ManyToOne
     @JoinColumn(name = "tipo_producto_id", referencedColumnName = "id")
     private TipoProducto tipoProducto;
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Set<ProductoCaracteristica> caracteristicas;
 
     //Solo para filtro de precio

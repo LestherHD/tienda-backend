@@ -1,5 +1,6 @@
 package com.tesis.tiendavirtualbackend.bo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class ProductoCaracteristica {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "producto_id")
+    @JsonBackReference
     private Productos producto;
     @ManyToOne
     @JoinColumn(name = "caracteristica_id")
