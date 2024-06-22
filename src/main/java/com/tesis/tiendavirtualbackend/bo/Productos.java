@@ -42,6 +42,10 @@ public class Productos {
     @Transient
     private Double rangoPrecioFin;
 
+    //Para guardar imagen
+    @Transient
+    private String imageSrc;
+
     public Productos(Long id, String nombre, String descripcion, Double precio, byte[] imagen,
                      TipoProducto tipoProducto, Set<ProductoCaracteristica> caracteristicas) {
         this.id = id;

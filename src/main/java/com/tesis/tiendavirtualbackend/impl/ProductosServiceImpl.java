@@ -6,6 +6,7 @@ import com.tesis.tiendavirtualbackend.dto.ProductosResponseDTO;
 import com.tesis.tiendavirtualbackend.repository.ProductosRepository;
 import com.tesis.tiendavirtualbackend.service.ProductosService;
 import com.tesis.tiendavirtualbackend.utils.GlobalExceptionHandler;
+import com.tesis.tiendavirtualbackend.utils.MetodosUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,13 @@ public class ProductosServiceImpl implements ProductosService {
                 request.getProducto().getRangoPrecioFin(), request.getProducto().getRangoPrecioFin() == null ? 0d : request.getProducto().getRangoPrecioFin(),
                 request.getProducto().getTipoProducto() != null ? request.getProducto().getTipoProducto().getId() : null, request.getProducto().getTipoProducto() == null ? null : request.getProducto().getTipoProducto().getId(),
                 pageable);
+
+        if (response != null && response.getContent() != null && response.getContent().size() > 0){
+            for (Productos obj: response.getContent()){
+                obj.setImageSrc(MetodosUtils.encodeBase64String(obj.getImagen()));
+            }
+        }
+
         return response;
     }
 
@@ -44,6 +52,7 @@ public class ProductosServiceImpl implements ProductosService {
     public ProductosResponseDTO save(Productos obj, String type) {
         ProductosResponseDTO responseDTO = new ProductosResponseDTO();
         try {
+            obj.setImagen(MetodosUtils.decodeBase64String(obj.getImageSrc()));
             repository.save(obj);
             responseDTO.setError(false);
             responseDTO.setMensaje("Registro "+type+" con éxito");

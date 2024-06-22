@@ -48,7 +48,7 @@ public class MailUtils {
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("lesthera2024@gmail.com", "Holandesa"));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("sid.kfajardo@gmail.com"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("lesthermente@gmail.com"));
             message.setSubject("Código para confirmación - " + usuarioCodigo.toUpperCase() + " " +sdf.format(fecha));
             message.setHeader("Content-Type", "text/html");
 
