@@ -68,7 +68,7 @@ public class CaracteristicasServiceImpl implements CaracteristicasService {
                 responseDTO.setMensaje("Registro eliminado con éxito");
             } catch (DataIntegrityViolationException ex){
                 HashMap<String, String> mapExcepciones = new HashMap<String, String>();
-                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+                mapExcepciones.put("fk_caracteristica", "un producto");
                 String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
                 responseDTO.setError(true);
                 responseDTO.setMensaje(exception);
@@ -76,19 +76,6 @@ public class CaracteristicasServiceImpl implements CaracteristicasService {
         }
 
         return responseDTO;
-    }
-
-    //Método para validar campos únicos, devuelve un mensaje por medio del consumo del servicio
-    @Override
-    public String getUniqueValidator(CaracteristicasRequestDTO requestDTO) {
-
-        if (null != requestDTO && null != requestDTO.getCaracteristicas()) {
-            Caracteristicas tp = repository.getByNombre(requestDTO.getCaracteristicas().getNombre());
-            if (null != tp && (tp.getId() != requestDTO.getCaracteristicas().getId() && tp.getNombre().equals(requestDTO.getCaracteristicas().getNombre()))){
-                return "Ya existe una sucursal con el mismo nombre registrada en el sistema";
-            }
-        }
-        return null;
     }
 
     @Override

@@ -63,10 +63,4 @@ public class TipoProductoController {
         return service.delete(id);
     }
 
-    @PostMapping(path = "/getValidadorUniques")
-    @ResponseBody
-    public String getValidadorUniques(@RequestBody TipoProductoRequestDTO requestDTO){
-        String response = service.getUniqueValidator(requestDTO);
-        return response;
-    }
 }

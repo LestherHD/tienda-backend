@@ -13,6 +13,8 @@ public interface ProductosService {
 
     Page<Productos> getByPage(ProductosRequestDTO request);
 
+    Page<Productos> getByFilter(ProductosRequestDTO request);
+
     ProductosResponseDTO save(Productos obj, String type);
 
     ProductosResponseDTO delete(Long id);

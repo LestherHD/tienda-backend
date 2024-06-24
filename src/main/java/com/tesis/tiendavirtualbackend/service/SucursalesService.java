@@ -17,8 +17,6 @@ public interface SucursalesService {
 
     SucursalesResponseDTO delete(Long id);
 
-    String getUniqueValidator(SucursalesRequestDTO requestDTO);
-
     List<Sucursales> getAll();
 
 }

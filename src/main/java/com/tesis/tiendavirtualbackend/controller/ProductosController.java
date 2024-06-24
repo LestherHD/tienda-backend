@@ -45,6 +45,12 @@ public class ProductosController {
         return service.getByPage(request);
     }
 
+    @PostMapping(path = "/getByFilter")
+    @ResponseBody
+    public Page<Productos> getByFilter(@RequestBody ProductosRequestDTO request) {
+        return service.getByFilter(request);
+    }
+
     @PostMapping
     @ResponseBody
     public ProductosResponseDTO save(@RequestBody Productos obj){

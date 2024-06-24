@@ -17,8 +17,6 @@ public interface CaracteristicasService {
 
     CaracteristicasResponseDTO delete(Long id);
 
-    String getUniqueValidator(CaracteristicasRequestDTO requestDTO);
-
     List<Caracteristicas> getAll();
 
 }

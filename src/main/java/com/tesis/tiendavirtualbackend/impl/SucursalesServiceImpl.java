@@ -80,19 +80,6 @@ public class SucursalesServiceImpl implements SucursalesService {
         return responseDTO;
     }
 
-    //Método para validar campos únicos, devuelve un mensaje por medio del consumo del servicio
-    @Override
-    public String getUniqueValidator(SucursalesRequestDTO requestDTO) {
-
-        if (null != requestDTO && null != requestDTO.getSucursales()) {
-            Sucursales tp = repository.getByNombre(requestDTO.getSucursales().getNombre());
-            if (null != tp && (tp.getId() != requestDTO.getSucursales().getId() && tp.getNombre().equals(requestDTO.getSucursales().getNombre()))){
-                return "Ya existe una sucursal con el mismo nombre registrada en el sistema";
-            }
-        }
-        return null;
-    }
-
     @Override
     public List<Sucursales> getAll() {
         return repository.findAll(Sort.by("nombre").ascending());

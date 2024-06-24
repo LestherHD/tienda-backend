@@ -10,14 +10,9 @@ public interface UsuariosService {
 
     Usuarios getById(Long id);
 
-//    HABILITAR Y DESARROLLAR SOLO SI HUBIERA UN MANTENIMIENTO DE USUARIOS
-//    Page<Usuarios> getByPage(UsuariosRequestDTO request);
-
     Usuarios save(Usuarios obj);
 
     void delete(Long id);
-
-    String getUniqueValidator(UsuariosRequestDTO requestDTO);
 
     List<Usuarios> getAll();
 

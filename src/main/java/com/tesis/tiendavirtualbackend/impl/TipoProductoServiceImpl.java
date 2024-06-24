@@ -68,7 +68,7 @@ public class TipoProductoServiceImpl implements TipoProductoService {
                 responseDTO.setMensaje("Registro eliminado con éxito");
             } catch (DataIntegrityViolationException ex){
                 HashMap<String, String> mapExcepciones = new HashMap<String, String>();
-                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+                mapExcepciones.put("fk_producto_tipo_producto_id", "un producto");
                 String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
                 responseDTO.setError(true);
                 responseDTO.setMensaje(exception);
@@ -76,19 +76,6 @@ public class TipoProductoServiceImpl implements TipoProductoService {
         }
 
         return responseDTO;
-    }
-
-    //Método para validar campos únicos, devuelve un mensaje por medio del consumo del servicio
-    @Override
-    public String getUniqueValidator(TipoProductoRequestDTO requestDTO) {
-
-        if (null != requestDTO && null != requestDTO.getTipoProducto()) {
-            TipoProducto tp = repository.getByNombre(requestDTO.getTipoProducto().getNombre());
-            if (null != tp && (tp.getId() != requestDTO.getTipoProducto().getId() && tp.getNombre().equals(requestDTO.getTipoProducto().getNombre()))){
-                return "Ya existe una sucursal con el mismo nombre registrada en el sistema";
-            }
-        }
-        return null;
     }
 
     @Override

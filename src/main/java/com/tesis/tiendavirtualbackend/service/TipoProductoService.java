@@ -17,8 +17,6 @@ public interface TipoProductoService {
 
     TipoProductoResponseDTO delete(Long id);
 
-    String getUniqueValidator(TipoProductoRequestDTO requestDTO);
-
     List<TipoProducto> getAll();
 
 }

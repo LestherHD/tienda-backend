@@ -66,13 +66,6 @@ public class UsuariosController {
         return service.getAll();
     }
 
-    //HABILITAR Y MODIFICAR SOLO SI HUBIERA UN MANTENIMIENTO DE USUARIOS
-//    @PostMapping(path = "/getByPage")
-//    @ResponseBody
-//    public Page<Usuarios> getByPage(@RequestBody UsuariosRequestDTO request) {
-//        return service.getByPage(request);
-//    }
-
     @PostMapping
     @ResponseBody
     public Usuarios save(@RequestBody Usuarios obj){
@@ -89,13 +82,6 @@ public class UsuariosController {
     @ResponseBody
     public void delete(@RequestParam Long id){
         service.delete(id);
-    }
-
-    @PostMapping(path = "/getValidadorUniques")
-    @ResponseBody
-    public String getValidadorUniques(@RequestBody UsuariosRequestDTO requestDTO){
-        String response = service.getUniqueValidator(requestDTO);
-        return response;
     }
 
     @PostMapping(path = "/recover-password")

@@ -63,10 +63,4 @@ public class CaracteristicasController {
         return service.delete(id);
     }
 
-    @PostMapping(path = "/getValidadorUniques")
-    @ResponseBody
-    public String getValidadorUniques(@RequestBody CaracteristicasRequestDTO requestDTO){
-        String response = service.getUniqueValidator(requestDTO);
-        return response;
-    }
 }

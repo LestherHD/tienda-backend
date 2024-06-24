@@ -63,10 +63,4 @@ public class SucursalesController {
         return service.delete(id);
     }
 
-    @PostMapping(path = "/getValidadorUniques")
-    @ResponseBody
-    public String getValidadorUniques(@RequestBody SucursalesRequestDTO requestDTO){
-        String response = service.getUniqueValidator(requestDTO);
-        return response;
-    }
 }
