@@ -26,10 +26,10 @@ public class ProductosController {
     public ProductosService getService() {return service;}
 
 
-    @GetMapping(path = "/getById")
+    @PostMapping(path = "/getById")
     @ResponseBody
-    public Productos getById(@RequestParam Long id){
-        Productos obj = service.getById(id);
+    public Productos getById(@RequestBody ProductosRequestDTO request){
+        Productos obj = service.getById(request.getProducto().getId());
         return obj;
     }
 

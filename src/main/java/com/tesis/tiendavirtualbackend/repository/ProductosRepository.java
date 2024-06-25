@@ -10,6 +10,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProductosRepository extends JpaRepository<Productos, Long> {
 
+    @Query("SELECT a "+
+            "FROM Productos a " +
+            "WHERE a.id = ?1 " )
     Productos getById(Long id);
 
     @Query("SELECT a "+
