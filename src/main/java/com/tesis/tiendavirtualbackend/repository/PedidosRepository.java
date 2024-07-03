@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface PedidosRepository extends JpaRepository<Pedidos, Long> {
-    @Query("SELECT a" +
+    @Query("SELECT a " +
             "FROM Pedidos a " +
             "WHERE (?1 is null or  ?2 = a.sucursal.id)")
     Page<Pedidos> getByPage(Long idSource, Long id,
