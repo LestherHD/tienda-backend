@@ -1,7 +1,10 @@
 package com.tesis.tiendavirtualbackend.bo;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
@@ -16,8 +19,6 @@ public class Pedidos {
     @Id
     @GeneratedValue( strategy= GenerationType.IDENTITY )
     private Long id;
-    @Column(length = 1300)
-    private String descripcion;
     @Column(length = 1)
     private String estado;
     @Column(length = 70)
@@ -35,6 +36,11 @@ public class Pedidos {
     private Sucursales sucursal;
     @Column(length = 1)
     private String metodoPago;
+    @Column
+    private Double total;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<DetallePedido> detallePedido;
 
 
 }
