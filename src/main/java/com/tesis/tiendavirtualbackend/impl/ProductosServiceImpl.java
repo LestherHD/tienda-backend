@@ -1,8 +1,11 @@
 package com.tesis.tiendavirtualbackend.impl;
 
+import com.tesis.tiendavirtualbackend.bo.Pedidos;
 import com.tesis.tiendavirtualbackend.bo.Productos;
+import com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosResponseDTO;
+import com.tesis.tiendavirtualbackend.repository.PedidosRepository;
 import com.tesis.tiendavirtualbackend.repository.ProductosRepository;
 import com.tesis.tiendavirtualbackend.service.ProductosService;
 import com.tesis.tiendavirtualbackend.utils.GlobalExceptionHandler;
@@ -23,6 +26,9 @@ public class ProductosServiceImpl implements ProductosService {
 
     @Autowired
     private ProductosRepository repository;
+
+    @Autowired
+    private PedidosRepository pedidosRepository;
 
     @Override
     public Productos getById(Long id) {
@@ -76,6 +82,23 @@ public class ProductosServiceImpl implements ProductosService {
         } catch (DataIntegrityViolationException ex){
             HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             mapExcepciones.put("productos.nombre_UNIQUE", "nombre");
+            String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+            responseDTO.setError(true);
+            responseDTO.setMensaje(exception);
+        }
+
+        return responseDTO;
+    }
+
+    @Override
+    public PedidosResponseDTO savePedidos(Pedidos obj, String type) {
+        PedidosResponseDTO responseDTO = new PedidosResponseDTO();
+        try {
+            pedidosRepository.save(obj);
+            responseDTO.setError(false);
+            responseDTO.setMensaje("Registro "+type+" con éxito");
+        } catch (DataIntegrityViolationException ex){
+            HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
             responseDTO.setError(true);
             responseDTO.setMensaje(exception);

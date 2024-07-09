@@ -27,8 +27,6 @@ public class Pedidos {
     private String apellidos;
     @Column(length = 8)
     private String telefono;
-    @Column(length = 300)
-    private String direccion;
     @Column(length = 2)
     private String departamento;
     @ManyToOne

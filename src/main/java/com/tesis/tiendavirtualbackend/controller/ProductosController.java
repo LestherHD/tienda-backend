@@ -1,6 +1,8 @@
 package com.tesis.tiendavirtualbackend.controller;
 
+import com.tesis.tiendavirtualbackend.bo.Pedidos;
 import com.tesis.tiendavirtualbackend.bo.Productos;
+import com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosResponseDTO;
 import com.tesis.tiendavirtualbackend.service.ProductosService;
@@ -55,6 +57,12 @@ public class ProductosController {
     @ResponseBody
     public ProductosResponseDTO save(@RequestBody Productos obj){
         return service.save(obj, "agregado");
+    }
+
+    @PostMapping(path = "/savePedido")
+    @ResponseBody
+    public PedidosResponseDTO savePedido(@RequestBody Pedidos obj){
+        return service.savePedidos(obj, "agregado");
     }
 
     @PutMapping

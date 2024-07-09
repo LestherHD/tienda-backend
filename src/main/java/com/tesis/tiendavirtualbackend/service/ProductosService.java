@@ -1,6 +1,8 @@
 package com.tesis.tiendavirtualbackend.service;
 
+import com.tesis.tiendavirtualbackend.bo.Pedidos;
 import com.tesis.tiendavirtualbackend.bo.Productos;
+import com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosResponseDTO;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,8 @@ public interface ProductosService {
     Page<Productos> getByFilter(ProductosRequestDTO request);
 
     ProductosResponseDTO save(Productos obj, String type);
+
+    PedidosResponseDTO savePedidos(Pedidos obj, String type);
 
     ProductosResponseDTO delete(Long id);
 
