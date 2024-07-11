@@ -36,6 +36,9 @@ public class Productos {
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private Set<ProductoCaracteristica> caracteristicas;
+    @Column
+    private String estado;
+
 
     //Solo para filtro de precio
     @Transient
@@ -48,7 +51,7 @@ public class Productos {
     private String imageSrc;
 
     public Productos(Long id, String nombre, String descripcion, Double precio, byte[] imagen,
-                     TipoProducto tipoProducto, Set<ProductoCaracteristica> caracteristicas) {
+                     TipoProducto tipoProducto, Set<ProductoCaracteristica> caracteristicas, String estado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -56,5 +59,6 @@ public class Productos {
         this.imagen = imagen;
         this.tipoProducto = tipoProducto;
         this.caracteristicas = caracteristicas;
+        this.estado = estado;
     }
 }

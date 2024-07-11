@@ -96,7 +96,15 @@ public class ProductosServiceImpl implements ProductosService {
         try {
             pedidosRepository.save(obj);
             responseDTO.setError(false);
-            responseDTO.setMensaje("Registro "+type+" con éxito");
+            if (type.equals("A")){
+                responseDTO.setMensaje("Compra realizada con éxito");
+            } else {
+                String estado = obj.getEstado().equals("N") ? "Nuevo" :
+                        obj.getEstado().equals("P") ? "En proceso" :
+                        obj.getEstado().equals("E") ? "Entregado" : "";
+                responseDTO.setMensaje("Pedido actualizado con éxito, estado actual: " + estado);
+            }
+
         } catch (DataIntegrityViolationException ex){
             HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);

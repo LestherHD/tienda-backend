@@ -59,12 +59,6 @@ public class ProductosController {
         return service.save(obj, "agregado");
     }
 
-    @PostMapping(path = "/savePedido")
-    @ResponseBody
-    public PedidosResponseDTO savePedido(@RequestBody Pedidos obj){
-        return service.savePedidos(obj, "agregado");
-    }
-
     @PutMapping
     @ResponseBody
     public ProductosResponseDTO update(@RequestBody Productos obj){
@@ -76,5 +70,19 @@ public class ProductosController {
     public ProductosResponseDTO delete(@RequestParam Long id){
         return service.delete(id);
     }
+
+    @PostMapping(path = "/savePedido")
+    @ResponseBody
+    public PedidosResponseDTO savePedido(@RequestBody Pedidos obj){
+        return service.savePedidos(obj, "A");
+    }
+
+    @PostMapping(path = "/updatePedido")
+    @ResponseBody
+    public PedidosResponseDTO updatePedido(@RequestBody Pedidos obj){
+        return service.savePedidos(obj, "E");
+    }
+
+
 
 }
