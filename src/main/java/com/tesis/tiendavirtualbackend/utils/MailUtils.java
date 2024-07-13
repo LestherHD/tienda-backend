@@ -5,8 +5,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
 
 public class MailUtils {
 
@@ -45,10 +44,11 @@ public class MailUtils {
             }
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
+            sdf.setTimeZone(TimeZone.getTimeZone("America/Guatemala"));
 
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress("lesthera2024@gmail.com", "Holandesa"));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress("lesthermente@gmail.com"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("lesthera2024@gmail.com"));
             message.setSubject("Código para confirmación - " + usuarioCodigo.toUpperCase() + " " +sdf.format(fecha));
             message.setHeader("Content-Type", "text/html");
 

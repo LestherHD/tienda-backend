@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -108,10 +109,12 @@ public class UsuariosServiceImpl implements UsuariosService {
         if (null !=  codigoConfirmacion) {
             codigoConfirmacionRepository.delete(codigoConfirmacion);
         }
-        codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "R", usuario.getId(), new Date());
+
+        Date fecha = new Date();
+        codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "R", usuario.getId(), fecha);
         codigoConfirmacionRepository.save(codigoConfirmacion);
         MailUtils.sendEmail("R", codigoConfirmacion.getCodigo(), usuario.getUsuario(), "", usuario.getNombres()+", "+usuario.getApellidos(),
-                "", "", codigoConfirmacion.getFecha());
+                "", "", fecha);
 
 
         return responseDTO;
@@ -138,10 +141,11 @@ public class UsuariosServiceImpl implements UsuariosService {
         if (null !=  codigoConfirmacion) {
             codigoConfirmacionRepository.delete(codigoConfirmacion);
         }
-        codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "P", usuario.getId(), new Date());
+        Date fecha = new Date();
+        codigoConfirmacion = new CodigoConfirmacion(null, MetodosUtils.generarCodigo(), "P", usuario.getId(), fecha);
         codigoConfirmacionRepository.save(codigoConfirmacion);
         MailUtils.sendEmail("P", codigoConfirmacion.getCodigo(), usuario.getUsuario(), "", usuario.getNombres()+", "+usuario.getApellidos(),
-                "", "", codigoConfirmacion.getFecha());
+                "", "", fecha);
 
 
         return responseDTO;

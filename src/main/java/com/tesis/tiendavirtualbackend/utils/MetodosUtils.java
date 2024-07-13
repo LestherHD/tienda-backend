@@ -1,10 +1,9 @@
 package com.tesis.tiendavirtualbackend.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 public class MetodosUtils {
 
@@ -37,6 +36,7 @@ public class MetodosUtils {
 
     public static String getFechaStringByFormat(Date fecha, String formato) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(formato);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("America/Guatemala"));
         return dateFormat.format(fecha);
     }
 
