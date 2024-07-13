@@ -35,7 +35,7 @@ public class PedidosServiceImpl implements PedidosService {
     public Page<Pedidos> getByPage(PedidosRequestDTO request) {
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").descending());
-        Page<Pedidos> response = repository.getByPage(request.getPedidos().getSucursal().getId(), request.getPedidos().getSucursal().getId() == null ? 0l : request.getPedidos().getSucursal().getId(),
+        Page<Pedidos> response = repository.getByPage(request.getPedidos().getSucursal() != null ? request.getPedidos().getSucursal().getId() : null, request.getPedidos().getSucursal() == null ? 0l : request.getPedidos().getSucursal().getId(),
                 request.getPedidos().getEstado(), pageable);
         return response;
     }
