@@ -51,7 +51,7 @@ public class PedidosServiceImpl implements PedidosService {
         String fechaFin = sDF.format(request.getFechaFin());
 
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").descending());
-        Page<Pedidos> response = repository.getByFilters(request.getPedidos().getSucursal().getId(), request.getPedidos().getSucursal().getId() == null ? 0l : request.getPedidos().getSucursal().getId(),
+        Page<Pedidos> response = repository.getByFilters(request.getPedidos().getSucursal() != null ? request.getPedidos().getSucursal().getId() : null, request.getPedidos().getSucursal() == null ? 0l : request.getPedidos().getSucursal().getId(),
                 fechaInicio, fechaFin, pageable);
         return response;
     }
