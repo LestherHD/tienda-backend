@@ -27,9 +27,6 @@ public class ProductosServiceImpl implements ProductosService {
     @Autowired
     private ProductosRepository repository;
 
-    @Autowired
-    private PedidosRepository pedidosRepository;
-
     @Override
     public Productos getById(Long id) {
         return repository.getById(id);
@@ -82,31 +79,6 @@ public class ProductosServiceImpl implements ProductosService {
         } catch (DataIntegrityViolationException ex){
             HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             mapExcepciones.put("productos.nombre_UNIQUE", "nombre");
-            String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
-            responseDTO.setError(true);
-            responseDTO.setMensaje(exception);
-        }
-
-        return responseDTO;
-    }
-
-    @Override
-    public PedidosResponseDTO savePedidos(Pedidos obj, String type) {
-        PedidosResponseDTO responseDTO = new PedidosResponseDTO();
-        try {
-            pedidosRepository.save(obj);
-            responseDTO.setError(false);
-            if (type.equals("A")){
-                responseDTO.setMensaje("Compra realizada con éxito");
-            } else {
-                String estado = obj.getEstado().equals("N") ? "Nuevo" :
-                        obj.getEstado().equals("P") ? "En proceso" :
-                        obj.getEstado().equals("E") ? "Entregado" : "";
-                responseDTO.setMensaje("Pedido actualizado con éxito, estado actual: " + estado);
-            }
-
-        } catch (DataIntegrityViolationException ex){
-            HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
             responseDTO.setError(true);
             responseDTO.setMensaje(exception);

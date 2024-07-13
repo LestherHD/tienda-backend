@@ -19,8 +19,6 @@ public interface ProductosService {
 
     ProductosResponseDTO save(Productos obj, String type);
 
-    PedidosResponseDTO savePedidos(Pedidos obj, String type);
-
     ProductosResponseDTO delete(Long id);
 
     List<Productos> getAll();

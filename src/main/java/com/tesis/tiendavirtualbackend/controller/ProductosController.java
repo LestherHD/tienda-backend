@@ -71,18 +71,4 @@ public class ProductosController {
         return service.delete(id);
     }
 
-    @PostMapping(path = "/savePedido")
-    @ResponseBody
-    public PedidosResponseDTO savePedido(@RequestBody Pedidos obj){
-        return service.savePedidos(obj, "A");
-    }
-
-    @PostMapping(path = "/updatePedido")
-    @ResponseBody
-    public PedidosResponseDTO updatePedido(@RequestBody Pedidos obj){
-        return service.savePedidos(obj, "E");
-    }
-
-
-
 }

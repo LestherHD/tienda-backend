@@ -14,7 +14,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.TimeZone;
 
 @Service
 public class PedidosServiceImpl implements PedidosService {
@@ -23,11 +27,32 @@ public class PedidosServiceImpl implements PedidosService {
     private PedidosRepository repository;
 
     @Override
-    public Page<Pedidos> getByPage(PedidosRequestDTO request) {
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("nombre").ascending());
+    public Pedidos getById(Long id) {
+        return repository.getById(id);
+    }
 
+    @Override
+    public Page<Pedidos> getByPage(PedidosRequestDTO request) {
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").descending());
         Page<Pedidos> response = repository.getByPage(request.getPedidos().getSucursal().getId(), request.getPedidos().getSucursal().getId() == null ? 0l : request.getPedidos().getSucursal().getId(),
-                pageable);
+                request.getPedidos().getEstado(), pageable);
+        return response;
+    }
+
+    @Override
+    public Page<Pedidos> getByFilter(PedidosRequestDTO request) {
+
+        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
+        sDF.setTimeZone(TimeZone.getTimeZone("America/Guatemala"));
+//        sDF.setTimeZone(new SimpleTimeZone(0, "GMT"));
+
+        String fechaInicio = sDF.format(request.getFechaInicio());
+        String fechaFin = sDF.format(request.getFechaFin());
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").descending());
+        Page<Pedidos> response = repository.getByFilters(request.getPedidos().getSucursal().getId(), request.getPedidos().getSucursal().getId() == null ? 0l : request.getPedidos().getSucursal().getId(),
+                fechaInicio, fechaFin, pageable);
         return response;
     }
 
@@ -35,9 +60,18 @@ public class PedidosServiceImpl implements PedidosService {
     public PedidosResponseDTO save(Pedidos obj, String type) {
         PedidosResponseDTO responseDTO = new PedidosResponseDTO();
         try {
+            obj.setFecha(new Date());
             repository.save(obj);
             responseDTO.setError(false);
-            responseDTO.setMensaje("Registro "+type+" con éxito");
+            if (type.equals("A")){
+                responseDTO.setMensaje("Compra realizada con éxito");
+            } else {
+                String estado = obj.getEstado().equals("N") ? "Nuevo" :
+                        obj.getEstado().equals("P") ? "En proceso" :
+                                obj.getEstado().equals("E") ? "Entregado" : "";
+                responseDTO.setMensaje("Pedido actualizado con éxito, estado actual: " + estado);
+            }
+
         } catch (DataIntegrityViolationException ex){
             HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
@@ -47,5 +81,33 @@ public class PedidosServiceImpl implements PedidosService {
 
         return responseDTO;
     }
+
+    @Override
+    public PedidosResponseDTO delete(Long id) {
+        PedidosResponseDTO responseDTO = new PedidosResponseDTO();
+
+        Pedidos obj = getById(id);
+        if (obj != null) {
+            try {
+                repository.delete(obj);
+                responseDTO.setError(false);
+                responseDTO.setMensaje("Registro eliminado con éxito");
+            } catch (DataIntegrityViolationException ex){
+                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+                responseDTO.setError(true);
+                responseDTO.setMensaje(exception);
+            }
+        }
+
+        return responseDTO;
+    }
+
+    @Override
+    public List<Pedidos> getAll() {
+        return repository.findAll(Sort.by("nombres").ascending());
+    }
+
 
 }
