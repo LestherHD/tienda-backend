@@ -57,6 +57,7 @@ public class ProductosServiceImpl implements ProductosService {
         Page<Productos> response = repository.getByFilters(
                 request.getProducto().getNombre(), request.getProducto().getNombre() == null ? "" : request.getProducto().getNombre(),
                 request.getProducto().getNombre(), request.getProducto().getNombre() == null ? "" : request.getProducto().getNombre(),
+                request.getProducto().getEstado(),
                 pageable);
 
         if (response != null && response.getContent() != null && response.getContent().size() > 0){

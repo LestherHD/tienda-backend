@@ -29,9 +29,11 @@ public interface ProductosRepository extends JpaRepository<Productos, Long> {
 
     @Query("SELECT a "+
             "FROM Productos a " +
-            "WHERE (?1 is null or a.nombre like %?2%) " +
-            "or (?3 is null or a.descripcion like %?4%) " )
+            "WHERE ((?1 is null or a.nombre like %?2%) " +
+            "or (?3 is null or a.descripcion like %?4%)) " +
+            "and a.estado = ?5" )
     Page<Productos> getByFilters(String nombreSource, String nombre,
-                              String descripcionSource, String descripcion, Pageable pageable);
+                                 String descripcionSource, String descripcion,
+                                 String estado, Pageable pageable);
 
 }

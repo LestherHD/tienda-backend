@@ -27,6 +27,9 @@ public class DetallePedido {
     private Long cantidad;
     @Column
     private Double precio;
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Productos producto;
 
 
 }
