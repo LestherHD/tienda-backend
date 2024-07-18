@@ -65,5 +65,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/LestherHD/tienda-backend</url>
+		</repository>
+	</distributionManagement>
 
 </project>
