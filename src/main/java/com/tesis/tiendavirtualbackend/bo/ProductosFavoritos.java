@@ -19,7 +19,6 @@ public class ProductosFavoritos {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "producto_id")
-    @JsonBackReference
     private Productos producto;
     @Column(length = 1)
     private Integer orden;
