@@ -28,6 +28,8 @@ public class ProductosFavoritosServiceImpl implements ProductosFavoritosService 
             responseDTO.setMensaje("Registro "+type+" con éxito");
         } catch (DataIntegrityViolationException ex){
             HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+            mapExcepciones.put("productos_favoritos.producto_id_UNIQUE", "producto");
+            mapExcepciones.put("productos_favoritos.orden_UNIQUE", "orden");
             String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
             responseDTO.setError(true);
             responseDTO.setMensaje(exception);
@@ -59,7 +61,7 @@ public class ProductosFavoritosServiceImpl implements ProductosFavoritosService 
 
     @Override
     public List<ProductosFavoritos> getAll() {
-        return repository.findAll(Sort.by("nombre").ascending());
+        return repository.findAll(Sort.by("orden").ascending());
     }
 
 }

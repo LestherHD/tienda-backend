@@ -11,4 +11,6 @@ public interface ProductosFavoritosRepository extends JpaRepository<ProductosFav
 
     ProductosFavoritos getById(Long id);
 
+    ProductosFavoritos getByOrden(Integer orden);
+
 }

@@ -1,8 +1,6 @@
 package com.tesis.tiendavirtualbackend.controller;
 
-import com.tesis.tiendavirtualbackend.bo.Pedidos;
 import com.tesis.tiendavirtualbackend.bo.Productos;
-import com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosResponseDTO;
 import com.tesis.tiendavirtualbackend.service.ProductosService;

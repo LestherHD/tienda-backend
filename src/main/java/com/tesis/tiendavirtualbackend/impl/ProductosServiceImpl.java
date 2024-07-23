@@ -101,6 +101,7 @@ public class ProductosServiceImpl implements ProductosService {
             } catch (DataIntegrityViolationException ex){
                 HashMap<String, String> mapExcepciones = new HashMap<String, String>();
                 mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+                mapExcepciones.put("fk_productos_favoritos_producto_id", "a los productos iniciales de tienda");
                 String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
                 responseDTO.setError(true);
                 responseDTO.setMensaje(exception);
