@@ -5,8 +5,11 @@ import com.tesis.tiendavirtualbackend.bo.Productos;
 import com.tesis.tiendavirtualbackend.bo.TipoProducto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ProductosRepository extends JpaRepository<Productos, Long> {
 
@@ -35,5 +38,14 @@ public interface ProductosRepository extends JpaRepository<Productos, Long> {
     Page<Productos> getByFilters(String nombreSource, String nombre,
                                  String descripcionSource, String descripcion,
                                  String estado, Pageable pageable);
+
+    @Query("SELECT a "+
+            "FROM Productos a " +
+            "inner join ProductosFavoritos b on a.id = b.producto.id " +
+            "where a.id = ?1" )
+    Productos findInProductosFavoritos(Long productoId);
+
+
+    List<Productos> getByEstado(String estado, Sort sort);
 
 }

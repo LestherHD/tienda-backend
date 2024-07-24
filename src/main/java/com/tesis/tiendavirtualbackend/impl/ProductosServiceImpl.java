@@ -92,28 +92,41 @@ public class ProductosServiceImpl implements ProductosService {
     public ProductosResponseDTO delete(Long id) {
         ProductosResponseDTO responseDTO = new ProductosResponseDTO();
 
-        Productos obj = getById(id);
-        if (obj != null) {
-            try {
-                repository.delete(obj);
+        Productos producto = repository.findInProductosFavoritos(id);
+        if (producto != null){
+            responseDTO.setError(true);
+            responseDTO.setMensaje("Error, no se puede eliminar el registro seleccionado ya que se encuentra asociado a los productos muestra.");
+        } else {
+            Productos obj = getById(id);
+            if (obj != null){
+                obj.setEstado("I");
+                repository.save(obj);
                 responseDTO.setError(false);
-                responseDTO.setMensaje("Registro eliminado con éxito");
-            } catch (DataIntegrityViolationException ex){
-                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
-                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
-                mapExcepciones.put("fk_productos_favoritos_producto_id", "a los productos iniciales de tienda");
-                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
-                responseDTO.setError(true);
-                responseDTO.setMensaje(exception);
+                responseDTO.setMensaje("El producto se ha inactivado");
             }
         }
+//        Productos obj = getById(id);
+//        if (obj != null) {
+//            try {
+//                repository.delete(obj);
+//                responseDTO.setError(false);
+//                responseDTO.setMensaje("Registro eliminado con éxito");
+//            } catch (DataIntegrityViolationException ex){
+//                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+//                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+//                mapExcepciones.put("fk_productos_favoritos_producto_id", "a los productos iniciales de tienda");
+//                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+//                responseDTO.setError(true);
+//                responseDTO.setMensaje(exception);
+//            }
+//        }
 
         return responseDTO;
     }
 
     @Override
     public List<Productos> getAll() {
-        return repository.findAll(Sort.by("nombre").ascending());
+        return repository.getByEstado("A" ,Sort.by("nombre").ascending());
     }
 
 }
