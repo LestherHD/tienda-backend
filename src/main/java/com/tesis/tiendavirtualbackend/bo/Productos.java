@@ -35,6 +35,7 @@ public class Productos {
     private TipoProducto tipoProducto;
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+    @OrderBy("valor ASC")
     private Set<ProductoCaracteristica> caracteristicas;
     @Column
     private String estado;
