@@ -1,8 +1,6 @@
 package com.tesis.tiendavirtualbackend.controller;
 
-import com.tesis.tiendavirtualbackend.bo.Pedidos;
 import com.tesis.tiendavirtualbackend.bo.Productos;
-import com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.ProductosResponseDTO;
 import com.tesis.tiendavirtualbackend.service.ProductosService;
@@ -69,6 +67,12 @@ public class ProductosController {
     @ResponseBody
     public ProductosResponseDTO delete(@RequestParam Long id){
         return service.delete(id);
+    }
+
+    @PostMapping(path = "/activar")
+    @ResponseBody
+    public ProductosResponseDTO getById(@RequestParam Long id){
+        return this.service.activar(id);
     }
 
 }

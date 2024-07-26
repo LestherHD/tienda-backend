@@ -5,8 +5,11 @@ import com.tesis.tiendavirtualbackend.bo.Productos;
 import com.tesis.tiendavirtualbackend.bo.TipoProducto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ProductosRepository extends JpaRepository<Productos, Long> {
 
@@ -21,19 +24,34 @@ public interface ProductosRepository extends JpaRepository<Productos, Long> {
             "and (?3 is null or a.nombre like %?4%) " +
             "and (?5 is null or a.precio >= ?6) " +
             "and (?7 is null or a.precio <= ?8) " +
-            "and (?9 is null or a.tipoProducto.id = ?10)")
+            "and (?9 is null or a.tipoProducto.id = ?10) " +
+            "and (?11 is null or a.estado = ?12) ")
     Page<Productos> getByPage(Long idSource, Long id, String nombreSource, String nombre,
                               Double precioMinSource, Double precioMin,
                               Double precioMaxSource, Double precioMax,
-                              Long tipoProductoSource, Long tipoProducto, Pageable pageable);
+                              Long tipoProductoSource, Long tipoProducto,
+                              String estadoSource, String estado,
+                              Pageable pageable);
 
     @Query("SELECT a "+
             "FROM Productos a " +
             "WHERE ((?1 is null or a.nombre like %?2%) " +
             "or (?3 is null or a.descripcion like %?4%)) " +
-            "and a.estado = ?5" )
+            "and a.estado = ?5 " +
+            "and (?6 is null or a.tipoProducto.id = ?7)")
     Page<Productos> getByFilters(String nombreSource, String nombre,
                                  String descripcionSource, String descripcion,
-                                 String estado, Pageable pageable);
+                                 String estado,
+                                 Long tipoProductoSource, Long tipoProducto,
+                                 Pageable pageable);
+
+    @Query("SELECT a "+
+            "FROM Productos a " +
+            "inner join ProductosFavoritos b on a.id = b.producto.id " +
+            "where a.id = ?1" )
+    Productos findInProductosFavoritos(Long productoId);
+
+
+    List<Productos> getByEstado(String estado, Sort sort);
 
 }

@@ -40,6 +40,7 @@ public class ProductosServiceImpl implements ProductosService {
                 request.getProducto().getRangoPrecioInicio(), request.getProducto().getRangoPrecioInicio() == null ? 0d : request.getProducto().getRangoPrecioInicio(),
                 request.getProducto().getRangoPrecioFin(), request.getProducto().getRangoPrecioFin() == null ? 0d : request.getProducto().getRangoPrecioFin(),
                 request.getProducto().getTipoProducto() != null ? request.getProducto().getTipoProducto().getId() : null, request.getProducto().getTipoProducto() == null ? null : request.getProducto().getTipoProducto().getId(),
+                request.getProducto().getEstado(), request.getProducto().getEstado() == null ? "" : request.getProducto().getEstado(),
                 pageable);
 
         if (response != null && response.getContent() != null && response.getContent().size() > 0){
@@ -58,6 +59,7 @@ public class ProductosServiceImpl implements ProductosService {
                 request.getProducto().getNombre(), request.getProducto().getNombre() == null ? "" : request.getProducto().getNombre(),
                 request.getProducto().getNombre(), request.getProducto().getNombre() == null ? "" : request.getProducto().getNombre(),
                 request.getProducto().getEstado(),
+                request.getProducto().getTipoProducto() != null ? request.getProducto().getTipoProducto().getId() : null, request.getProducto().getTipoProducto() == null ? 0l : request.getProducto().getTipoProducto().getId(),
                 pageable);
 
         if (response != null && response.getContent() != null && response.getContent().size() > 0){
@@ -92,19 +94,48 @@ public class ProductosServiceImpl implements ProductosService {
     public ProductosResponseDTO delete(Long id) {
         ProductosResponseDTO responseDTO = new ProductosResponseDTO();
 
-        Productos obj = getById(id);
-        if (obj != null) {
-            try {
-                repository.delete(obj);
+        Productos producto = repository.findInProductosFavoritos(id);
+        if (producto != null){
+            responseDTO.setError(true);
+            responseDTO.setMensaje("Error, no se puede eliminar el registro seleccionado ya que se encuentra asociado a los productos muestra.");
+        } else {
+            Productos obj = getById(id);
+            if (obj != null){
+                obj.setEstado("I");
+                repository.save(obj);
                 responseDTO.setError(false);
-                responseDTO.setMensaje("Registro eliminado con éxito");
-            } catch (DataIntegrityViolationException ex){
-                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
-                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
-                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
-                responseDTO.setError(true);
-                responseDTO.setMensaje(exception);
+                responseDTO.setMensaje("El producto se ha inactivado");
             }
+        }
+//        Productos obj = getById(id);
+//        if (obj != null) {
+//            try {
+//                repository.delete(obj);
+//                responseDTO.setError(false);
+//                responseDTO.setMensaje("Registro eliminado con éxito");
+//            } catch (DataIntegrityViolationException ex){
+//                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+//                mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+//                mapExcepciones.put("fk_productos_favoritos_producto_id", "a los productos iniciales de tienda");
+//                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+//                responseDTO.setError(true);
+//                responseDTO.setMensaje(exception);
+//            }
+//        }
+
+        return responseDTO;
+    }
+
+    @Override
+    public ProductosResponseDTO activar(Long id) {
+        ProductosResponseDTO responseDTO = new ProductosResponseDTO();
+
+        Productos obj = getById(id);
+        if (obj != null){
+            obj.setEstado("A");
+            repository.save(obj);
+            responseDTO.setError(false);
+            responseDTO.setMensaje("El producto se ha activado");
         }
 
         return responseDTO;
@@ -112,7 +143,7 @@ public class ProductosServiceImpl implements ProductosService {
 
     @Override
     public List<Productos> getAll() {
-        return repository.findAll(Sort.by("nombre").ascending());
+        return repository.getByEstado("A" ,Sort.by("nombre").ascending());
     }
 
 }
