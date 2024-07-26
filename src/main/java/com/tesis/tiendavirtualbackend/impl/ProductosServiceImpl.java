@@ -40,6 +40,7 @@ public class ProductosServiceImpl implements ProductosService {
                 request.getProducto().getRangoPrecioInicio(), request.getProducto().getRangoPrecioInicio() == null ? 0d : request.getProducto().getRangoPrecioInicio(),
                 request.getProducto().getRangoPrecioFin(), request.getProducto().getRangoPrecioFin() == null ? 0d : request.getProducto().getRangoPrecioFin(),
                 request.getProducto().getTipoProducto() != null ? request.getProducto().getTipoProducto().getId() : null, request.getProducto().getTipoProducto() == null ? null : request.getProducto().getTipoProducto().getId(),
+                request.getProducto().getEstado(), request.getProducto().getEstado() == null ? "" : request.getProducto().getEstado(),
                 pageable);
 
         if (response != null && response.getContent() != null && response.getContent().size() > 0){
@@ -121,6 +122,21 @@ public class ProductosServiceImpl implements ProductosService {
 //                responseDTO.setMensaje(exception);
 //            }
 //        }
+
+        return responseDTO;
+    }
+
+    @Override
+    public ProductosResponseDTO activar(Long id) {
+        ProductosResponseDTO responseDTO = new ProductosResponseDTO();
+
+        Productos obj = getById(id);
+        if (obj != null){
+            obj.setEstado("A");
+            repository.save(obj);
+            responseDTO.setError(false);
+            responseDTO.setMensaje("El producto se ha activado");
+        }
 
         return responseDTO;
     }

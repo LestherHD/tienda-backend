@@ -21,6 +21,8 @@ public interface ProductosService {
 
     ProductosResponseDTO delete(Long id);
 
+    ProductosResponseDTO activar(Long id);
+
     List<Productos> getAll();
 
 }
