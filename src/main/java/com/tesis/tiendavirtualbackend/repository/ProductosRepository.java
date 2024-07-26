@@ -24,11 +24,14 @@ public interface ProductosRepository extends JpaRepository<Productos, Long> {
             "and (?3 is null or a.nombre like %?4%) " +
             "and (?5 is null or a.precio >= ?6) " +
             "and (?7 is null or a.precio <= ?8) " +
-            "and (?9 is null or a.tipoProducto.id = ?10)")
+            "and (?9 is null or a.tipoProducto.id = ?10) " +
+            "and (?11 is null or a.estado = ?12) ")
     Page<Productos> getByPage(Long idSource, Long id, String nombreSource, String nombre,
                               Double precioMinSource, Double precioMin,
                               Double precioMaxSource, Double precioMax,
-                              Long tipoProductoSource, Long tipoProducto, Pageable pageable);
+                              Long tipoProductoSource, Long tipoProducto,
+                              String estadoSource, String estado,
+                              Pageable pageable);
 
     @Query("SELECT a "+
             "FROM Productos a " +

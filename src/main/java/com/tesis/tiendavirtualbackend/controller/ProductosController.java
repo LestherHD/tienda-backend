@@ -69,4 +69,10 @@ public class ProductosController {
         return service.delete(id);
     }
 
+    @PostMapping(path = "/activar")
+    @ResponseBody
+    public ProductosResponseDTO getById(@RequestParam Long id){
+        return this.service.activar(id);
+    }
+
 }
