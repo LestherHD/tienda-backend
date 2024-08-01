@@ -51,6 +51,12 @@ public class PedidosController {
         return service.getByFilter(request);
     }
 
+    @PostMapping(path = "/getInfoBranchSales")
+    @ResponseBody
+    List<PedidosResponseDTO> getInfoBranchSales(PedidosRequestDTO request){
+        return service.getInfoBranchSales(request);
+    }
+
     @PostMapping
     @ResponseBody
     public PedidosResponseDTO save(@RequestBody Pedidos obj){

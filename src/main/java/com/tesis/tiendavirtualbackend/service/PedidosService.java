@@ -20,4 +20,6 @@ public interface PedidosService {
     List<Pedidos> getAll();
 
     Page<Pedidos> getByFilter(PedidosRequestDTO request);
+
+    List<PedidosResponseDTO> getInfoBranchSales(PedidosRequestDTO request);
 }

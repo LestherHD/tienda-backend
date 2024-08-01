@@ -10,8 +10,9 @@ import java.util.Date;
 @Setter
 public class PedidosRequestDTO {
     private Pedidos pedidos;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private String fechaInicio;
+    private String fechaFin;
+    private Long idSucursal;
     private int page;
     private int size;
 

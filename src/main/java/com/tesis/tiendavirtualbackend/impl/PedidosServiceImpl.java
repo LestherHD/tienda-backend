@@ -34,9 +34,12 @@ public class PedidosServiceImpl implements PedidosService {
     @Override
     public Page<Pedidos> getByPage(PedidosRequestDTO request) {
 
+        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
+        sDF.setTimeZone(TimeZone.getTimeZone("America/Guatemala"));
+
         Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").descending());
         Page<Pedidos> response = repository.getByPage(request.getPedidos().getSucursal() != null ? request.getPedidos().getSucursal().getId() : null, request.getPedidos().getSucursal() == null ? 0l : request.getPedidos().getSucursal().getId(),
-                request.getPedidos().getEstado(), pageable);
+                request.getPedidos().getEstado(), request.getFechaInicio(), request.getFechaFin(), pageable);
         return response;
     }
 
@@ -45,7 +48,6 @@ public class PedidosServiceImpl implements PedidosService {
 
         SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
         sDF.setTimeZone(TimeZone.getTimeZone("America/Guatemala"));
-//        sDF.setTimeZone(new SimpleTimeZone(0, "GMT"));
 
         String fechaInicio = sDF.format(request.getFechaInicio());
         String fechaFin = sDF.format(request.getFechaFin());
@@ -57,10 +59,25 @@ public class PedidosServiceImpl implements PedidosService {
     }
 
     @Override
+    public List<PedidosResponseDTO> getInfoBranchSales(PedidosRequestDTO request) {
+        SimpleDateFormat sDF = new SimpleDateFormat("yyyy-MM-dd");
+        sDF.setTimeZone(TimeZone.getTimeZone("America/Guatemala"));
+
+        String fechaInicio = sDF.format(request.getFechaInicio());
+        String fechaFin = sDF.format(request.getFechaFin());
+
+        List<PedidosResponseDTO> list = repository.getInfoBranchSales(request.getIdSucursal(), request.getIdSucursal() == null ? 0l : request.getIdSucursal(),
+                fechaInicio, fechaFin);
+
+        return list;
+    }
+
+    @Override
     public PedidosResponseDTO save(Pedidos obj, String type) {
         PedidosResponseDTO responseDTO = new PedidosResponseDTO();
         try {
-            obj.setFecha(new Date());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            obj.setFecha(simpleDateFormat.format(new Date()));
             repository.save(obj);
             responseDTO.setError(false);
             if (type.equals("A")){

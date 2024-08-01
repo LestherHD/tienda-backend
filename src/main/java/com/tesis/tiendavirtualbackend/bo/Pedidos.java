@@ -38,7 +38,7 @@ public class Pedidos {
     @Column
     private Double total;
     @Column
-    private Date fecha;
+    private String fecha;
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<DetallePedido> detallePedido;
