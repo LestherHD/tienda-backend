@@ -34,12 +34,14 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Long> {
     Page<Pedidos> getByFilters(Long idSucursalSource, Long idSucursal,
                             String fechaInicio, String fechaFin, Pageable pageable);
 
-    @Query("SELECT new com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO(sum(a.total) as total, b.nombre as nombre_sucursal)  " +
+    @Query("SELECT new com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO(sum(a.total) as total, b.nombre as nombreSucursal)  " +
             "FROM Pedidos a " +
             "LEFT JOIN Sucursales b ON b.id = a.sucursal.id " +
             "WHERE (?1 is null or  ?2 = a.sucursal.id) " +
             "and ( a.fecha between ?3 and ?4) " +
-            "and (a.estado = 'E') ")
+            "and (a.estado = 'E') " +
+            "group by nombreSucursal " +
+            "order by nombreSucursal ")
     List<PedidosResponseDTO> getInfoBranchSales(Long idSucursalSource, Long idSucursal,
                                                 String fechaInicio, String fechaFin);
 }

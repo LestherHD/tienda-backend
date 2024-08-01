@@ -53,7 +53,7 @@ public class PedidosController {
 
     @PostMapping(path = "/getInfoBranchSales")
     @ResponseBody
-    List<PedidosResponseDTO> getInfoBranchSales(PedidosRequestDTO request){
+    List<PedidosResponseDTO> getInfoBranchSales(@RequestBody PedidosRequestDTO request){
         return service.getInfoBranchSales(request);
     }
 
