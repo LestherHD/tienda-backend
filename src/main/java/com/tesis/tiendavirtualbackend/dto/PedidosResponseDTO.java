@@ -18,13 +18,23 @@ public class PedidosResponseDTO {
     private boolean error;
 
 
-    //Datos para dashboard de ventas por sucursal
+    //Variable para dashboard de ventas por sucursal
     private String nombreSucursal;
+    //Variable para dashboard de productos más vendidos
+    private String nombreProducto;
+
     private Double total;
 
+
     //Constructor para dashboard de ventas por sucursal
-    public PedidosResponseDTO(String nombreSucursal, Double total) {
+    public PedidosResponseDTO(Double total, String nombreSucursal) {
         this.nombreSucursal = nombreSucursal;
+        this.total = total;
+    }
+
+    //Constructor para dashboard de productos mas vendidos
+    public PedidosResponseDTO(String nombreProducto, Double total) {
+        this.nombreProducto = nombreProducto;
         this.total = total;
     }
 }

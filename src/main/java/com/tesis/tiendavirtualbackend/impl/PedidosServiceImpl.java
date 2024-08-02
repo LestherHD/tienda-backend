@@ -89,6 +89,24 @@ public class PedidosServiceImpl implements PedidosService {
     }
 
     @Override
+    public List<PedidosResponseDTO> getInfoMostSelledProducts(PedidosRequestDTO request) {
+
+        Instant instantInicio = Instant.parse(request.getFechaInicio());
+        Instant instantFin = Instant.parse(request.getFechaFin());
+
+        LocalDate localDateInicio = instantInicio.atZone(ZoneId.of("UTC")).toLocalDate();
+        LocalDate localDateFin = instantFin.atZone(ZoneId.of("UTC")).toLocalDate();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fechaInicio = localDateInicio.format(formatter) + " 00:00:00";
+        String fechaFin = localDateFin.format(formatter)+ " 23:59:59";
+
+        List<PedidosResponseDTO> list = repository.getInfoMostSelledProducts(request.getIdSucursal(), request.getIdSucursal() == null ? 0l : request.getIdSucursal(),
+                fechaInicio, fechaFin, request.getEstadoProducto(), request.getEstadoProducto() != null ? request.getEstadoProducto() : "");
+        return list;
+    }
+
+    @Override
     public PedidosResponseDTO save(Pedidos obj, String type) {
         PedidosResponseDTO responseDTO = new PedidosResponseDTO();
         try {

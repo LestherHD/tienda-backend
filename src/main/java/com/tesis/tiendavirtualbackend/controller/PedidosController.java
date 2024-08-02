@@ -57,6 +57,12 @@ public class PedidosController {
         return service.getInfoBranchSales(request);
     }
 
+    @PostMapping(path = "/getInfoMostSelledProducts")
+    @ResponseBody
+    List<PedidosResponseDTO> getInfoMostSelledProducts(@RequestBody PedidosRequestDTO request){
+        return service.getInfoMostSelledProducts(request);
+    }
+
     @PostMapping
     @ResponseBody
     public PedidosResponseDTO save(@RequestBody Pedidos obj){

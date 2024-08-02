@@ -22,4 +22,6 @@ public interface PedidosService {
     Page<Pedidos> getByFilter(PedidosRequestDTO request);
 
     List<PedidosResponseDTO> getInfoBranchSales(PedidosRequestDTO request);
+
+    List<PedidosResponseDTO> getInfoMostSelledProducts(PedidosRequestDTO request);
 }

@@ -44,4 +44,18 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Long> {
             "order by nombreSucursal ")
     List<PedidosResponseDTO> getInfoBranchSales(Long idSucursalSource, Long idSucursal,
                                                 String fechaInicio, String fechaFin);
+
+    @Query("SELECT new com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO(b.nombre as nombreProducto, sum(a.precio * a.cantidad) as total)  " +
+            "FROM DetallePedido a " +
+            "LEFT JOIN Productos b ON b.id = a.producto.id " +
+            "LEFT JOIN Pedidos c ON c.id = a.pedido.id " +
+            "WHERE (?1 is null or  ?2 = c.sucursal.id) " +
+            "and ( c.fecha between ?3 and ?4) " +
+            "and (?5 is null or b.estado = ?6) " +
+            "and (c.estado = 'E') " +
+            "group by nombreProducto " +
+            "order by total desc ")
+    List<PedidosResponseDTO> getInfoMostSelledProducts(Long idSucursalSource, Long idSucursal,
+                                                String fechaInicio, String fechaFin,
+                                               String estadoProductoSource, String estadoProducto);
 }

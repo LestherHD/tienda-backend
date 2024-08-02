@@ -13,6 +13,7 @@ public class PedidosRequestDTO {
     private String fechaInicio;
     private String fechaFin;
     private Long idSucursal;
+    private String estadoProducto;
     private int page;
     private int size;
 
