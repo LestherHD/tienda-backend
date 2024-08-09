@@ -69,7 +69,7 @@ public class UsuariosController {
     @PostMapping
     @ResponseBody
     public UsuariosResponseDTO save(@RequestBody Usuarios obj){
-        return service.save(obj, "agregado");
+        return service.save(obj, "registrado");
     }
 
     @PutMapping

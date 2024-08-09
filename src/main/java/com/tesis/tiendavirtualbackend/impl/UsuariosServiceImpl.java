@@ -44,7 +44,7 @@ public class UsuariosServiceImpl implements UsuariosService {
         try {
             repository.save(obj);
             responseDTO.setError(false);
-            responseDTO.setRespuesta("Registro "+type+" con éxito");
+            responseDTO.setRespuesta("Usuario "+type+" con éxito");
         } catch (DataIntegrityViolationException ex){
             HashMap<String, String> mapExcepciones = new HashMap<String, String>();
             mapExcepciones.put("usuarios.telefono_UNIQUE", "teléfono");
