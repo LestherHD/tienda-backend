@@ -7,9 +7,11 @@ import com.tesis.tiendavirtualbackend.dto.UsuariosResponseDTO;
 import com.tesis.tiendavirtualbackend.repository.CodigoConfirmacionRepository;
 import com.tesis.tiendavirtualbackend.repository.UsuariosRepository;
 import com.tesis.tiendavirtualbackend.service.UsuariosService;
+import com.tesis.tiendavirtualbackend.utils.GlobalExceptionHandler;
 import com.tesis.tiendavirtualbackend.utils.MailUtils;
 import com.tesis.tiendavirtualbackend.utils.MetodosUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -34,8 +37,25 @@ public class UsuariosServiceImpl implements UsuariosService {
     }
 
     @Override
-    public Usuarios save(Usuarios obj) {
-        return repository.save(obj);
+    public UsuariosResponseDTO save(Usuarios obj, String type) {
+
+        UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
+
+        try {
+            repository.save(obj);
+            responseDTO.setError(false);
+            responseDTO.setRespuesta("Registro "+type+" con éxito");
+        } catch (DataIntegrityViolationException ex){
+            HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+            mapExcepciones.put("usuarios.telefono_UNIQUE", "teléfono");
+            mapExcepciones.put("usuarios.correo_UNIQUE", "correo");
+            mapExcepciones.put("usuarios.usuario_UNIQUE", "usuario");
+            String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+            responseDTO.setError(true);
+            responseDTO.setRespuesta(exception);
+        }
+
+        return responseDTO;
     }
 
     @Override

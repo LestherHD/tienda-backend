@@ -10,7 +10,7 @@ public interface UsuariosService {
 
     Usuarios getById(Long id);
 
-    Usuarios save(Usuarios obj);
+    UsuariosResponseDTO save(Usuarios obj, String type);
 
     void delete(Long id);
 

@@ -68,14 +68,14 @@ public class UsuariosController {
 
     @PostMapping
     @ResponseBody
-    public Usuarios save(@RequestBody Usuarios obj){
-        return service.save(obj);
+    public UsuariosResponseDTO save(@RequestBody Usuarios obj){
+        return service.save(obj, "agregado");
     }
 
     @PutMapping
     @ResponseBody
-    public Usuarios update(@RequestBody Usuarios obj){
-        return service.save(obj);
+    public UsuariosResponseDTO update(@RequestBody Usuarios obj){
+        return service.save(obj, "editado");
     }
 
     @DeleteMapping
