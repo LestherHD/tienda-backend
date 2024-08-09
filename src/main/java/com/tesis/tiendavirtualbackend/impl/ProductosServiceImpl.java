@@ -97,7 +97,7 @@ public class ProductosServiceImpl implements ProductosService {
         Productos producto = repository.findInProductosFavoritos(id);
         if (producto != null){
             responseDTO.setError(true);
-            responseDTO.setMensaje("Error, no se puede eliminar el registro seleccionado ya que se encuentra asociado a los productos muestra.");
+            responseDTO.setMensaje("Error, no se puede inactivar el registro seleccionado ya que se encuentra asociado a los productos muestra.");
         } else {
             Productos obj = getById(id);
             if (obj != null){

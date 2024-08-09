@@ -71,6 +71,7 @@ public class SucursalesServiceImpl implements SucursalesService {
             } catch (DataIntegrityViolationException ex){
                 HashMap<String, String> mapExcepciones = new HashMap<String, String>();
                 mapExcepciones.put("fk_usuarios_sucursal_id", "un usuario");
+                mapExcepciones.put("fk_pedido_sucursal_id", "un pedido");
                 String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
                 responseDTO.setError(true);
                 responseDTO.setMensaje(exception);
