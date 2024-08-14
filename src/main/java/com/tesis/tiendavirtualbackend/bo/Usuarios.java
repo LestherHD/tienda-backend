@@ -1,5 +1,6 @@
 package com.tesis.tiendavirtualbackend.bo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Usuarios {
     private Long id;
     @Column(length = 25)
     private String usuario;
+    @JsonIgnore
     @Column(length = 35)
     private String contrasenia;
     @Column(length = 60)
@@ -33,5 +35,7 @@ public class Usuarios {
     private Sucursales sucursal;
     @Column(length = 1)
     private String principal;
+
+
 
 }

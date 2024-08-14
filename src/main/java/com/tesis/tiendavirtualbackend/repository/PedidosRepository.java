@@ -28,7 +28,7 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Long> {
 
     @Query("SELECT a " +
             "FROM Pedidos a " +
-            "WHERE (?1 is null or  ?2 = a.sucursal.id) " +
+            "WHERE (?1 is null or ?2 = a.sucursal.id) " +
             "and ( a.fecha between ?3 and ?4) " +
             "and (a.estado = 'E') ")
     Page<Pedidos> getByFilters(Long idSucursalSource, Long idSucursal,
@@ -37,7 +37,7 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Long> {
     @Query("SELECT new com.tesis.tiendavirtualbackend.dto.PedidosResponseDTO(sum(a.total) as total, b.nombre as nombreSucursal)  " +
             "FROM Pedidos a " +
             "LEFT JOIN Sucursales b ON b.id = a.sucursal.id " +
-            "WHERE (?1 is null or  ?2 = a.sucursal.id) " +
+            "WHERE (?1 is null or ?2 = a.sucursal.id) " +
             "and ( a.fecha between ?3 and ?4) " +
             "and (a.estado = 'E') " +
             "group by nombreSucursal " +

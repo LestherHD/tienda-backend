@@ -49,7 +49,7 @@ public class PedidosServiceImpl implements PedidosService {
         String fechaInicio = localDateInicio.format(formatter) + " 00:00:00";
         String fechaFin = localDateFin.format(formatter)+ " 23:59:59";
 
-        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").descending());
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by("fecha").ascending());
         Page<Pedidos> response = repository.getByPage(request.getPedidos().getSucursal() != null ? request.getPedidos().getSucursal().getId() : null, request.getPedidos().getSucursal() == null ? 0l : request.getPedidos().getSucursal().getId(),
                 request.getPedidos().getEstado(), fechaInicio, fechaFin, pageable);
         return response;

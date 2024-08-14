@@ -12,12 +12,13 @@ import com.tesis.tiendavirtualbackend.utils.MailUtils;
 import com.tesis.tiendavirtualbackend.utils.MetodosUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -209,5 +210,25 @@ public class UsuariosServiceImpl implements UsuariosService {
         }
 
         return null;
+    }
+
+    @Override
+    public Page<Usuarios> getByPage(UsuariosRequestDTO request) {
+        List<Sort.Order> list = new ArrayList<Sort.Order>();
+        list.add(Sort.Order.asc("nombres"));
+        list.add(Sort.Order.asc("usuario"));
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(list).ascending());
+
+        Page<Usuarios> response = repository.getByPage(request.getUsuarios().getId(), request.getUsuarios().getId() == null ? 0l : request.getUsuarios().getId(),
+                request.getUsuarios().getNombres(), request.getUsuarios().getNombres() == null ? "" : request.getUsuarios().getNombres(),
+                request.getUsuarios().getApellidos(), request.getUsuarios().getApellidos() == null ? "" : request.getUsuarios().getApellidos(),
+                request.getUsuarios().getUsuario(), request.getUsuarios().getUsuario() == null ? "" : request.getUsuarios().getUsuario(),
+                request.getUsuarios().getCorreo(), request.getUsuarios().getCorreo() == null ? "" : request.getUsuarios().getCorreo(),
+                request.getUsuarios().getSucursal() == null ? null : null, request.getUsuarios().getSucursal() == null ? 0l : request.getUsuarios().getSucursal().getId(),
+                request.getUsuarios().getPrincipal(), request.getUsuarios().getPrincipal() == null ? "" : request.getUsuarios().getPrincipal(),
+                request.getUsuarios().getTelefono(), request.getUsuarios().getTelefono() == null ? "" : request.getUsuarios().getTelefono(),
+                pageable);
+
+        return response;
     }
 }

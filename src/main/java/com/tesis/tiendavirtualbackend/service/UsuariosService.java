@@ -3,6 +3,7 @@ package com.tesis.tiendavirtualbackend.service;
 import com.tesis.tiendavirtualbackend.bo.Usuarios;
 import com.tesis.tiendavirtualbackend.dto.UsuariosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.UsuariosResponseDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface UsuariosService {
     UsuariosResponseDTO generarCodigoConfirmarUsuarioPrincipal(UsuariosRequestDTO requestDTO);
 
     UsuariosResponseDTO actualizarContrasenia(UsuariosRequestDTO requestDTO);
+
+    Page<Usuarios> getByPage(UsuariosRequestDTO request);
 }

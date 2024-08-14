@@ -1,10 +1,13 @@
 package com.tesis.tiendavirtualbackend.controller;
 
+import com.tesis.tiendavirtualbackend.bo.Sucursales;
 import com.tesis.tiendavirtualbackend.bo.Usuarios;
+import com.tesis.tiendavirtualbackend.dto.SucursalesRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.UsuariosRequestDTO;
 import com.tesis.tiendavirtualbackend.dto.UsuariosResponseDTO;
 import com.tesis.tiendavirtualbackend.service.UsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +61,12 @@ public class UsuariosController {
     public Usuarios existeUsuarioPrincipal(){
         Usuarios obj = service.getByPrincipal();
         return obj;
+    }
+
+    @PostMapping(path = "/getByPage")
+    @ResponseBody
+    public Page<Usuarios> getByPage(@RequestBody UsuariosRequestDTO request) {
+        return service.getByPage(request);
     }
 
     @GetMapping(path = "/getAll")
