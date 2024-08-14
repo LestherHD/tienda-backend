@@ -60,11 +60,29 @@ public class UsuariosServiceImpl implements UsuariosService {
     }
 
     @Override
-    public void delete(Long id) {
+    public UsuariosResponseDTO delete(Long id) {
+        UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
+
         Usuarios obj = getById(id);
-        if (obj != null) {
-            repository.delete(obj);
+        List<CodigoConfirmacion> codigo = codigoConfirmacionRepository.getByUsuarioId(id);
+        if (codigo != null && codigo.size() > 0){
+            for (CodigoConfirmacion c : codigo )
+            codigoConfirmacionRepository.deleteById(c.getId());
         }
+        if (obj != null) {
+            try {
+                repository.delete(obj);
+                responseDTO.setError(false);
+                responseDTO.setRespuesta("Usuario eliminado con éxito");
+            } catch (DataIntegrityViolationException ex){
+                HashMap<String, String> mapExcepciones = new HashMap<String, String>();
+                String exception = GlobalExceptionHandler.handleDataIntegrityViolationException(ex, mapExcepciones);
+                responseDTO.setError(true);
+                responseDTO.setRespuesta(exception);
+            }
+        }
+
+        return responseDTO;
     }
 
     @Override

@@ -13,7 +13,7 @@ public interface UsuariosService {
 
     UsuariosResponseDTO save(Usuarios obj, String type);
 
-    void delete(Long id);
+    UsuariosResponseDTO delete(Long id);
 
     List<Usuarios> getAll();
 

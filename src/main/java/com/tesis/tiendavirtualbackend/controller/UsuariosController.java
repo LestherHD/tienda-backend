@@ -89,8 +89,8 @@ public class UsuariosController {
 
     @DeleteMapping
     @ResponseBody
-    public void delete(@RequestParam Long id){
-        service.delete(id);
+    public UsuariosResponseDTO delete(@RequestParam Long id){
+        return service.delete(id);
     }
 
     @PostMapping(path = "/recover-password")
