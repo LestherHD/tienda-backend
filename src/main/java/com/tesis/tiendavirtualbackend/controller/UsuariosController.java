@@ -81,7 +81,7 @@ public class UsuariosController {
         return service.save(obj, "registrado");
     }
 
-    @PutMapping
+    @PatchMapping
     @ResponseBody
     public UsuariosResponseDTO update(@RequestBody Usuarios obj){
         return service.save(obj, "editado");

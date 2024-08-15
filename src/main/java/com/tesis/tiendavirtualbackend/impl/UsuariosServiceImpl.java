@@ -43,7 +43,20 @@ public class UsuariosServiceImpl implements UsuariosService {
         UsuariosResponseDTO responseDTO = new UsuariosResponseDTO();
 
         try {
-            repository.save(obj);
+
+            if (type.equals("editado")){
+                Usuarios objSave = repository.getById(obj.getId());
+                objSave.setPrincipal(obj.getPrincipal());
+                objSave.setSucursal(obj.getSucursal());
+                objSave.setTelefono(obj.getTelefono());
+                objSave.setCorreo(obj.getCorreo());
+                objSave.setNombres(obj.getNombres());
+                objSave.setApellidos(obj.getApellidos());
+                objSave.setUsuario(obj.getUsuario());
+                repository.save(objSave);
+            } else {
+                repository.save(obj);
+            }
             responseDTO.setError(false);
             responseDTO.setRespuesta("Usuario "+type+" con éxito");
         } catch (DataIntegrityViolationException ex){
