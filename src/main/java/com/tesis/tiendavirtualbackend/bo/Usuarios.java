@@ -1,6 +1,6 @@
 package com.tesis.tiendavirtualbackend.bo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +19,7 @@ public class Usuarios {
     private Long id;
     @Column(length = 25)
     private String usuario;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(length = 35)
     private String contrasenia;
     @Column(length = 60)
