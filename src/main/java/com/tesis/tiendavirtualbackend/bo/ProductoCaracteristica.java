@@ -26,5 +26,7 @@ public class ProductoCaracteristica {
     private Caracteristicas caracteristica;
     @Column
     private String valor;
+    @Column
+    private Double precio;
 
 }
