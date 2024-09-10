@@ -110,7 +110,10 @@ public class PedidosServiceImpl implements PedidosService {
     public PedidosResponseDTO save(Pedidos obj, String type) {
         PedidosResponseDTO responseDTO = new PedidosResponseDTO();
         try {
+            TimeZone timeZone = TimeZone.getTimeZone("America/Guatemala");
+
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            simpleDateFormat.setTimeZone(timeZone);
             obj.setFecha(simpleDateFormat.format(new Date()));
             repository.save(obj);
             responseDTO.setError(false);
