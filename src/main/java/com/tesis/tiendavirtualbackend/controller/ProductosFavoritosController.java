@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping(value="/productosFavoritos", produces = { "application/json" })
+@RequestMapping(value="/api/productosFavoritos", produces = { "application/json" })
 public class ProductosFavoritosController {
 
     @Autowired

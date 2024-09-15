@@ -15,7 +15,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping(value="/usuarios", produces = { "application/json" })
+@RequestMapping(value="/api/usuarios", produces = { "application/json" })
 public class UsuariosController {
 
     @Autowired

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping(value="/caracteristicas", produces = { "application/json" })
+@RequestMapping(value="/api/caracteristicas", produces = { "application/json" })
 public class CaracteristicasController {
 
     @Autowired
