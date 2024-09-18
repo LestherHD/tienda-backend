@@ -39,7 +39,16 @@ public class ProductosServiceImpl implements ProductosService {
 
     @Override
     public Productos getById(Long id) {
-        return repository.getById(id);
+        Productos obj = repository.getById(id);
+
+        Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getId()).normalize();
+        try {
+            obj.setImagen(Files.readAllBytes(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return obj;
     }
 
     @Override
