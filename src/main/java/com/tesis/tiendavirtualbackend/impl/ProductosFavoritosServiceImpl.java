@@ -1,5 +1,6 @@
 package com.tesis.tiendavirtualbackend.impl;
 
+import com.tesis.tiendavirtualbackend.bo.Productos;
 import com.tesis.tiendavirtualbackend.bo.ProductosFavoritos;
 import com.tesis.tiendavirtualbackend.dto.ProductosFavoritosResponseDTO;
 import com.tesis.tiendavirtualbackend.repository.ProductosFavoritosRepository;
@@ -10,11 +11,17 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class ProductosFavoritosServiceImpl implements ProductosFavoritosService {
+
+    private static final String FILE_DIR = "/var/www/html/images";
 
     @Autowired
     private ProductosFavoritosRepository repository;
@@ -61,7 +68,18 @@ public class ProductosFavoritosServiceImpl implements ProductosFavoritosService 
 
     @Override
     public List<ProductosFavoritos> getAll() {
-        return repository.findAll(Sort.by("orden").ascending());
+        List<ProductosFavoritos> lst = repository.findAll(Sort.by("orden").ascending());
+        if (lst != null && lst.size() > 0){
+            for (ProductosFavoritos obj : lst){
+                Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getId()).normalize();
+                try {
+                    obj.getProducto().setImagen(Files.readAllBytes(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return lst;
     }
 
 }
