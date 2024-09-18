@@ -71,7 +71,7 @@ public class ProductosFavoritosServiceImpl implements ProductosFavoritosService 
         List<ProductosFavoritos> lst = repository.findAll(Sort.by("orden").ascending());
         if (lst != null && lst.size() > 0){
             for (ProductosFavoritos obj : lst){
-                Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getId()).normalize();
+                Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getProducto().getId()).normalize();
                 try {
                     obj.getProducto().setImagen(Files.readAllBytes(filePath));
                 } catch (IOException e) {
