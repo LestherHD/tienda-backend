@@ -27,9 +27,6 @@ public class Productos {
     private String descripcion;
     @Column
     private Double precio;
-    @Lob
-    @Column
-    private byte[] imagen;
     @ManyToOne
     @JoinColumn(name = "tipo_producto_id", referencedColumnName = "id")
     private TipoProducto tipoProducto;
@@ -50,6 +47,12 @@ public class Productos {
     //Para guardar imagen
     @Transient
     private String imageSrc;
+
+    @Transient
+    private String fileName;
+
+    @Transient
+    private byte[] imagen;
 
     public Productos(Long id, String nombre, String descripcion, Double precio, byte[] imagen,
                      TipoProducto tipoProducto, Set<ProductoCaracteristica> caracteristicas, String estado) {

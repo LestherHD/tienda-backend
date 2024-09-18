@@ -18,11 +18,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class ProductosServiceImpl implements ProductosService {
+
+    private static final String FILE_DIR = "/var/www/html/images";
 
     @Autowired
     private ProductosRepository repository;
@@ -45,7 +55,12 @@ public class ProductosServiceImpl implements ProductosService {
 
         if (response != null && response.getContent() != null && response.getContent().size() > 0){
             for (Productos obj: response.getContent()){
-                obj.setImageSrc(MetodosUtils.encodeBase64String(obj.getImagen()));
+                Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getId()).normalize();
+                try {
+                    obj.setImagen(Files.readAllBytes(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -64,7 +79,13 @@ public class ProductosServiceImpl implements ProductosService {
 
         if (response != null && response.getContent() != null && response.getContent().size() > 0){
             for (Productos obj: response.getContent()){
-                obj.setImageSrc(MetodosUtils.encodeBase64String(obj.getImagen()));
+
+                Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getId()).normalize();
+                try {
+                    obj.setImagen(Files.readAllBytes(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -75,7 +96,24 @@ public class ProductosServiceImpl implements ProductosService {
     public ProductosResponseDTO save(Productos obj, String type) {
         ProductosResponseDTO responseDTO = new ProductosResponseDTO();
         try {
-            obj.setImagen(MetodosUtils.decodeBase64String(obj.getImageSrc()));
+
+            byte[] decodedBytes = MetodosUtils.decodeBase64String(obj.getImageSrc());
+
+            File directory = new File(FILE_DIR);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            File fileToSave = new File(FILE_DIR + "/file" + obj.getId());
+            try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
+                fos.write(decodedBytes);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+//            obj.setImagen();
             repository.save(obj);
             responseDTO.setError(false);
             responseDTO.setMensaje("Registro "+type+" con éxito");
@@ -140,6 +178,8 @@ public class ProductosServiceImpl implements ProductosService {
 
         return responseDTO;
     }
+
+
 
     @Override
     public List<Productos> getAll() {
