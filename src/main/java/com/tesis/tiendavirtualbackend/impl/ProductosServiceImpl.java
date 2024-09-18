@@ -192,7 +192,18 @@ public class ProductosServiceImpl implements ProductosService {
 
     @Override
     public List<Productos> getAll() {
-        return repository.getByEstado("A" ,Sort.by("nombre").ascending());
+        List<Productos> lst = repository.getByEstado("A" ,Sort.by("nombre").ascending());
+        if (lst != null && lst.size() > 0){
+            for (Productos obj : lst){
+                Path filePath = Paths.get(FILE_DIR).resolve("file"+obj.getId()).normalize();
+                try {
+                    obj.setImagen(Files.readAllBytes(filePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return lst;
     }
 
 }
