@@ -16,4 +16,9 @@ y Apache Maven en su versión 3.8.4 de preferencia, dejar ambos en las variables
 
 se encuetre desocupado porque es en el que correrá la aplicación.
 
+5. - Si es Sistema Operativo Windows, crear la siguiente ruta: C:\tienda-virtual\images
+- Si es Sistema Operativo Linux o Mac crear la siguiente ruta: /var/www/html/images
+- En las clases ProductosServiceImpl y ProductosFavoritosServiceImpl si es Sistema Operativo Windows habilitar la constante private static final String FILE_DIR = "C:\\tienda-virtual\\images";
+- En las clases ProductosServiceImpl y ProductosFavoritosServiceImpl si es Sistema Operativo Linux o Mac habilitar la constante private static final String FILE_DIR = "/var/www/html/images";
+
 
