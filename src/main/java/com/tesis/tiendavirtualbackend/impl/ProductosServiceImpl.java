@@ -32,7 +32,10 @@ import java.util.List;
 @Service
 public class ProductosServiceImpl implements ProductosService {
 
-    private static final String FILE_DIR = "/var/www/html/images";
+    //    SO Windows
+private static final String FILE_DIR = "C:\\tienda-virtual\\images";
+//    SO Linux o Mac
+//    private static final String FILE_DIR = "/var/www/html/images"
 
     @Autowired
     private ProductosRepository repository;
